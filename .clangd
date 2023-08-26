@@ -1,0 +1,5 @@
+CompileFlags:
+  Add: [
+  -I/run/media/duck/vault/dev/personal/c/sandbox,
+  -I/run/media/duck/vault/dev/personal/c/src,
+]
