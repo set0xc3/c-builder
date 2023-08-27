@@ -53,3 +53,5 @@ API Window *platform_window_open(const char *title, i32 xpos, i32 ypos,
                                  i32 width, i32 height);
 API b8      platform_window_close(Window *window);
 API void    platform_window_swap_buffer(Window *window);
+
+API Window *platform_window_root_get(void);

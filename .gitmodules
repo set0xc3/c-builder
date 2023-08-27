@@ -1,0 +1,4 @@
+[submodule "vendor/c"]
+	path = vendor/c
+	url = git@github.com:set0xc3/c.git
+	branch = master

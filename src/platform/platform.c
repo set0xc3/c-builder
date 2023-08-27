@@ -206,3 +206,9 @@ platform_window_swap_buffer(Window *window)
 {
     SDL_GL_SwapWindow(window->sdl.handle);
 }
+
+Window *
+platform_window_root_get(void)
+{
+    return state->root_window;
+}
