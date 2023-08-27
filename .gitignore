@@ -1,0 +1,10 @@
+.cache/
+build/
+
+*.o
+*.a
+*.so
+*.dll
+*.log
+
+compile_commands.json

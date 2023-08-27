@@ -1,7 +1,7 @@
 TARGET = sandbox.bin
 
 CC = clang
-INCDIRS = -Isrc
+INCDIRS = -I. -Isrc -Isandbox
 CLIBS = -lm -lSDL2
 OPT = -O0
 
