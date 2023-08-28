@@ -8,7 +8,7 @@ MICROUI_DIR := $(VENDOR_DIR)/microui/src
 
 CC := clang
 INC_DIRS := -I$(SRC_DIR) -I$(SANDBOX_DIR) -I$(VENDOR_DIR)/microui/src
-INC_FLAGS := -lm -lGL -lSDL2
+INC_FLAGS := -lm -lvulkan -lSDL2
 OPT := -O0
 
 NOWARN := -Wno-gnu-zero-variadic-macro-arguments \
@@ -46,6 +46,11 @@ $(BUILD_DIR)/$(TARGET): $(OBJS)
 
 run :
 	$(BUILD_DIR)/$(TARGET)
+
+pre-build :
+	mkdir -p build/assets/shaders
+	/usr/bin/glslc assets/shaders/simple.vert -o build/assets/shaders/simple.vert.spv
+	/usr/bin/glslc assets/shaders/simple.frag -o build/assets/shaders/simple.frag.spv
 
 clean :
 	rm -f compile_commands.json

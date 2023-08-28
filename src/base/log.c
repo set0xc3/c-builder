@@ -3,8 +3,8 @@
 const char *logger_types_string[LoggerType_Count] = {
     "INFO",
     "DEBUG",
-    "WARNING",
-    "ERROR",
+    "WARN",
+    "ERR",
 };
 
 void
@@ -17,7 +17,7 @@ log_print(u32 type, const char *time, const char *file_path, u32 line,
     char       *buffer       = NULL;
     FILE       *stream       = NULL;
     const char *prefix       = "";
-    const u32   prefix_width = 7;
+    const u32   prefix_width = 6;
 
     stream = stdout;
     prefix = logger_types_string[type];
@@ -31,9 +31,9 @@ log_print(u32 type, const char *time, const char *file_path, u32 line,
     vsnprintf(buffer, buffer_size + 1, format, args);
 
     const u32 padding = prefix_width - (u32)strlen(prefix);
-    fprintf(stream, "[%s] [%s]", time, prefix);
-    fprintf(stream, "%*s [%s:%d] %s", padding, "", strrchr(file_path, '/') + 1,
-            line, buffer);
+    fprintf(stream, "[%s][%s][%s:%d]", time, prefix,
+            strrchr(file_path, '/') + 1, line);
+    fprintf(stream, " %*s %s", padding, "-", buffer);
 
     va_end(args);
 }

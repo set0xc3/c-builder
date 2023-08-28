@@ -1,8 +1,8 @@
 ---
 BasedOnStyle: GNU
-IndentWidth: 4
+IndentWidth: 2
 AlignConsecutiveDeclarations: true
 AlignConsecutiveAssignments: true
 AlignConsecutiveMacros: true
 SpaceBeforeParens: ControlStatements
-BreakBeforeBraces: Allman
+BreakBeforeBraces: Linux
