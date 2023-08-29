@@ -8,8 +8,8 @@
 
 static OS_Context *ctx;
 
-b8
-os_startup(b8 console)
+b32
+os_startup(b32 console)
 {
   ctx             = malloc(sizeof(OS_Context));
   ctx->is_console = console;
@@ -29,7 +29,7 @@ os_startup(b8 console)
   return true;
 }
 
-b8
+b32
 os_shutdown(void)
 {
   if (!ctx->is_console) {
@@ -41,7 +41,7 @@ os_shutdown(void)
   return true;
 }
 
-b8
+b32
 os_poll_event(void)
 {
   SDL_Event raw_event = { 0 };
@@ -184,7 +184,7 @@ os_window_open(const char *title, i32 xpos, i32 ypos, i32 width, i32 height)
   return out_window;
 }
 
-b8
+b32
 os_window_close(OS_Window *window)
 {
   if (window) {

@@ -3,7 +3,7 @@
 #include "base/defines.h"
 #include "base/vector.h"
 
-API void renderer_init(void);
+API void renderer_startup(void);
 API void renderer_flush(void);
 API void renderer_draw_rect(Vector4 rect, Vector4 color);
 API void renderer_draw_text(const char *text, Vector2 pos, Vector4 color);

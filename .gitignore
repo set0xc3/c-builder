@@ -1,4 +1,5 @@
 .cache/
+.vscode/
 build/
 
 *.o
@@ -6,5 +7,6 @@ build/
 *.so
 *.dll
 *.log
+*.tmp
 
 compile_commands.json

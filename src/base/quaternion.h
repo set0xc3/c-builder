@@ -124,7 +124,7 @@ quat_to_rotation_matrix(Vector4 q, Vector3 center)
 }
 
 INLINE Vector4
-quat_from_axis_angle(Vector3 axis, f32 angle, b8 normalize)
+quat_from_axis_angle(Vector3 axis, f32 angle, b32 normalize)
 {
     const f32 half_angle = 0.5f * angle;
     f32       s          = sinf(half_angle);

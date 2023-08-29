@@ -11,13 +11,13 @@ int
 main(void)
 {
   os_startup(false);
-  renderer_init();
+  renderer_startup();
 
-  // while (os_poll_event()) {
-  //   os_delay(1);
-  // }
-  //
-  // os_shutdown();
+  while (os_poll_event()) {
+    os_delay(1);
+  }
+
+  os_shutdown();
 
   return 0;
 }

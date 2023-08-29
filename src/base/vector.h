@@ -226,7 +226,7 @@ vec2_dot(Vector2 left, Vector2 right)
     return (left.x * right.x) + (left.y * right.y);
 }
 
-INLINE b8
+INLINE b32
 vec2_eq(Vector2 left, Vector2 right)
 {
     return left.x == right.x && left.y == right.y;
@@ -388,7 +388,7 @@ vec3_cross(Vector3 a, Vector3 b)
     return v;
 }
 
-INLINE b8
+INLINE b32
 vec3_eq(Vector3 left, Vector3 right)
 {
     return left.x == right.x && left.y == right.y && left.z == right.z;
@@ -546,7 +546,7 @@ vec4_dot(Vector4 left, Vector4 right)
            + (left.w * right.w);
 }
 
-INLINE b8
+INLINE b32
 vec4_eq(Vector4 left, Vector4 right)
 {
     return left.x == right.x && left.y == right.y && left.z == right.z

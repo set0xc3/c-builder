@@ -32,9 +32,9 @@ str_lit(const char *c)
     return result;
 }
 
-INLINE b8
+INLINE b32
 str_eq(const String left, const String right)
 {
-    b8 result = !strcmp(left.data, right.data);
+    b32 result = !strcmp(left.data, right.data);
     return result;
 }

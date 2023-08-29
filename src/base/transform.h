@@ -12,7 +12,7 @@ typedef struct Transform
     Vector3           scale;
     Matrix4           local;
     struct Transform *parent;
-    b8                is_dirty;
+    b32                is_dirty;
 } Transform;
 
 API Transform transform_create(Vector3 position, Vector4 rotation,

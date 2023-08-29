@@ -12,7 +12,7 @@
 static int buf_idx = 0;
 
 void
-renderer_init(void)
+renderer_startup(void)
 {
   vulkan_init();
 }
