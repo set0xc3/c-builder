@@ -24,7 +24,7 @@ static b32 enable_validation_layers = true;
 static b32 enable_validation_layers = false;
 #endif
 
-static Vulkan_Context *ctx;
+static VulkanContext *ctx;
 
 VKAPI_ATTR VkBool32 VKAPI_CALL
 debug_callback(VkDebugUtilsMessageSeverityFlagBitsEXT      messageSeverity,
@@ -259,7 +259,7 @@ is_device_suitable(VkPhysicalDevice device)
 void
 vulkan_init(void)
 {
-  ctx = calloc(1, sizeof(Vulkan_Context));
+  ctx = calloc(1, sizeof(VulkanContext));
 
   if (SDL_Vulkan_LoadLibrary(NULL) != 0) {
     LOG_ERR("[VK] Failed load library: %s\n", SDL_GetError());
@@ -399,7 +399,8 @@ vulkan_physical_device_pick(void)
 
   for (u32 i = 0; i < device_count; i++) {
     if (is_device_suitable(physical_device_list[i])) {
-      ctx->gpu = physical_device_list[i];
+      ctx->gpu = physical_device_list[0];
+      vkGetPhysicalDeviceProperties(ctx->gpu, &ctx->properties);
       break;
     }
   }
@@ -410,28 +411,25 @@ vulkan_physical_device_create(void)
 {
   QueueFamilyIndices indices = find_queue_families(ctx->gpu);
 
-  f32 queue_priority = 1.0f;
-
-  VkDeviceQueueCreateInfo graphics_queue_create_info = {
-    .sType            = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-    .pNext            = NULL,
-    .queueFamilyIndex = indices.graphics_family_index,
-    .queueCount       = 1,
-    .pQueuePriorities = &queue_priority,
+  uint32_t unique_queue_families[] = {
+    indices.graphics_family_index,
+    // indices.present_family_index, // TODO: is not unique
   };
-
-  VkDeviceQueueCreateInfo present_queue_create_info = {
-    .sType            = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-    .pNext            = NULL,
-    .queueFamilyIndex = indices.present_family_index,
-    .queueCount       = 1,
-    .pQueuePriorities = &queue_priority,
-  };
+  u32 unique_queue_familie_count = ArrayCount(unique_queue_families);
 
   VkDeviceQueueCreateInfo *queue_create_infos
-      = calloc(2, sizeof(VkDeviceQueueCreateInfo));
-  queue_create_infos[0] = graphics_queue_create_info;
-  queue_create_infos[1] = present_queue_create_info;
+      = calloc(unique_queue_familie_count, sizeof(VkDeviceQueueCreateInfo));
+
+  f32 queue_priority = 1.0f;
+  for (u32 i = 0; i < unique_queue_familie_count; i++) {
+    uint32_t                queueFamily       = unique_queue_families[i];
+    VkDeviceQueueCreateInfo queue_create_info = { 0 };
+    queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    queue_create_info.queueFamilyIndex = queueFamily;
+    queue_create_info.queueCount       = 1;
+    queue_create_info.pQueuePriorities = &queue_priority;
+    queue_create_infos[i]              = queue_create_info;
+  }
 
   VkPhysicalDeviceFeatures device_features = { 0 };
   vkGetPhysicalDeviceFeatures(ctx->gpu, &device_features);
@@ -440,7 +438,7 @@ vulkan_physical_device_create(void)
     .sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
     .pNext                   = NULL,
     .flags                   = 0,
-    .queueCreateInfoCount    = 2,
+    .queueCreateInfoCount    = unique_queue_familie_count,
     .pQueueCreateInfos       = queue_create_infos,
     .enabledLayerCount       = 0,
     .ppEnabledLayerNames     = NULL,
@@ -457,6 +455,7 @@ vulkan_physical_device_create(void)
   }
 
   vkCreateDevice(ctx->gpu, &device_create_info, NULL, &ctx->device);
+
   vkGetDeviceQueue(ctx->device, indices.graphics_family_index, 0,
                    &ctx->graphics_queue);
 }
@@ -466,4 +465,34 @@ vulkan_pipeline_create(const String vert_filepath, const String frag_filepath)
 {
   String vert_source = os_file_read(vert_filepath);
   String frag_source = os_file_read(frag_filepath);
+
+  VkShaderModule vert_shader_module = NULL;
+  if (!vulkan_pipeline_shader_create(vert_source, &vert_shader_module)) {
+    LOG_ERR("[VK] Failed to create vert_shader_module\n");
+  }
+
+  VkShaderModule frag_shader_module = NULL;
+  if (!vulkan_pipeline_shader_create(frag_source, &frag_shader_module)) {
+    LOG_ERR("[VK] Failed to create frag_shader_module\n");
+  }
+}
+
+b32
+vulkan_pipeline_shader_create(const String    file_source,
+                              VkShaderModule *shader_module)
+{
+  VkShaderModuleCreateInfo create_info = {
+    .sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
+    .pNext    = NULL,
+    .flags    = 0,
+    .codeSize = file_source.size,
+    .pCode    = (const u32 *)file_source.data,
+  };
+
+  if (vkCreateShaderModule(ctx->device, &create_info, NULL, shader_module)
+      != VK_SUCCESS) {
+    return false;
+  }
+
+  return true;
 }

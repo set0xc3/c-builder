@@ -41,8 +41,8 @@ main(void)
   vulkan_surface_create();
   vulkan_physical_device_pick();
   vulkan_physical_device_create();
-  vulkan_pipeline_create(str_lit("assets/shaders/simple.vert"),
-                         str_lit("assets/shaders/simple.frag"));
+  vulkan_pipeline_create(str_lit("build/assets/shaders/simple.vert.spv"),
+                         str_lit("build/assets/shaders/simple.frag.spv"));
 
   os_shutdown();
 

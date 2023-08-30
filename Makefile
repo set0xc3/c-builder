@@ -43,7 +43,7 @@ SANDBOX_OBJS += $(patsubst $(SANDBOX_DIR)/%.c, $(BUILD_DIR)/$(SANDBOX_DIR)/%.o, 
 
 .DEFAULT_GOAL := all
 
-all: build-sandbox build-tests
+all: pre-build build-sandbox build-tests
 
 $(BUILD_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(dir $@)
@@ -69,8 +69,18 @@ $(BUILD_BIN_DIR)/%.bin: $(BUILD_DIR)/$(TESTS_DIR)/%.o $(TESTS_OBJS)
 	mkdir -p $(BUILD_BIN_DIR)
 	$(CC) $(CFLAGS) $(OBJS) $< -o $@ $(INC_FLAGS)
 
+pre-build:
+	mkdir -p $(BUILD_DIR)/bin
+	ln -fsr assets/ $(BUILD_BIN_DIR)
+
 build-sandbox: $(BUILD_BIN_DIR)/$(SANDBOX_TARGET)
+
 build-tests: $(TESTS_BINS)
+
+build-shaders:
+	mkdir -p $(BUILD_DIR)/assets/shaders
+	/usr/bin/glslc assets/shaders/simple.vert -o $(BUILD_DIR)/assets/shaders/simple.vert.spv
+	/usr/bin/glslc assets/shaders/simple.frag -o $(BUILD_DIR)/assets/shaders/simple.frag.spv
 
 run-sandbox: 
 	@$(BUILD_BIN_DIR)/$(SANDBOX_TARGET)
@@ -84,11 +94,6 @@ test-vulkan:
 tests: \
 	test-os \
 	test-vulkan
-
-pre-build:
-	mkdir -p build/assets/shaders
-	/usr/bin/glslc assets/shaders/simple.vert -o build/assets/shaders/simple.vert.spv
-	/usr/bin/glslc assets/shaders/simple.frag -o build/assets/shaders/simple.frag.spv
 
 clean:
 	rm -f compile_commands.json

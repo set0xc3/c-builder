@@ -2,6 +2,7 @@
 
 #include "base/defines.h"
 #include "base/string.h"
+
 #include <vulkan/vulkan.h>
 
 typedef struct SwapChainSupportDetails {
@@ -21,16 +22,26 @@ typedef struct QueueFamilyIndices {
   u32 present_family_index;
 } QueueFamilyIndices;
 
-typedef struct Vulkan_Context {
+// typedef struct PipelineConfigInfo {
+// } PipelineConfigInfo;
+
+typedef struct PipelineContext {
+  VkPipeline     graphics_pipeline;
+  VkShaderModule vert_shader_module;
+  VkShaderModule frag_shader_module;
+} PipelineContext;
+
+typedef struct VulkanContext {
   VkDebugUtilsMessengerEXT debug_messenger;
 
-  VkInstance       instance;
-  VkDevice         device;
-  VkSurfaceKHR     surface;
-  VkQueue          graphics_queue;
-  VkQueue          present_queue;
-  VkPhysicalDevice gpu;
-} Vulkan_Context;
+  VkInstance                 instance;
+  VkDevice                   device;
+  VkSurfaceKHR               surface;
+  VkQueue                    graphics_queue;
+  VkQueue                    present_queue;
+  VkPhysicalDevice           gpu;
+  VkPhysicalDeviceProperties properties;
+} VulkanContext;
 
 QueueFamilyIndices find_queue_families(VkPhysicalDevice _device);
 
@@ -61,9 +72,14 @@ SwapChainSupportDetails query_swapchain_support(VkPhysicalDevice device);
 API void vulkan_init(void);
 API void vulkan_destroy(void);
 
-API b32  vulkan_instance_create(void);
-API b32  vulkan_surface_create(void);
+API b32 vulkan_instance_create(void);
+
+API b32 vulkan_surface_create(void);
+
 API void vulkan_physical_device_pick(void);
 API void vulkan_physical_device_create(void);
+
 API void vulkan_pipeline_create(const String vert_filepath,
                                 const String frag_filepath);
+API b32  vulkan_pipeline_shader_create(const String    file_source,
+                                       VkShaderModule *shader_module);
