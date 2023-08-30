@@ -1,14 +1,13 @@
-SANDBOX_TARGET	:= sandbox.bin
-TESTS_TARGET 		:= tests.bin
+SANDBOX_TARGET := sandbox.bin
 
-BUILD_DIR 		:= ./build
+BUILD_DIR 		:= build
 BUILD_BIN_DIR := $(BUILD_DIR)/bin
 BUILD_LIB_DIR := $(BUILD_DIR)/lib
 
-SRC_DIR 		:= ./src
-TESTS_DIR 	:= ./tests
-SANDBOX_DIR := ./sandbox
-VENDOR_DIR 	:= ./vendor
+SRC_DIR 		:= src
+TESTS_DIR 	:= tests
+SANDBOX_DIR := sandbox
+VENDOR_DIR 	:= vendor
 MICROUI_DIR := $(VENDOR_DIR)/microui/src
 
 CC 				:= clang
@@ -34,56 +33,57 @@ TESTS_SRCS		:= $(shell find $(TESTS_DIR) -type f -name '*.c')
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/$(SRC_DIR)/%.o, $(SRCS)) \
         $(patsubst $(MICROUI_DIR)/%.c, $(BUILD_DIR)/$(MICROUI_DIR)/%.o, $(MICROUI_SRCS))
 
-TESTS_OBJS := $(OBJS)
-TESTS_OBJS += $(patsubst $(TESTS_DIR)/%.c, $(BUILD_DIR)/$(TESTS_DIR)/%.o, $(TESTS_SRCS))
+TESTS_OBJS := $(patsubst $(TESTS_DIR)/%.c, $(BUILD_DIR)/$(TESTS_DIR)/%.o, $(TESTS_SRCS))
+TESTS_BINS := $(patsubst $(BUILD_DIR)/$(TESTS_DIR)/%.o, $(BUILD_BIN_DIR)/%.bin, $(TESTS_OBJS))
 
 SANDBOX_OBJS := $(OBJS)
 SANDBOX_OBJS += $(patsubst $(SANDBOX_DIR)/%.c, $(BUILD_DIR)/$(SANDBOX_DIR)/%.o, $(SANDBOX_SRCS))
 
 .DEFAULT_GOAL := all
 
-$(BUILD_DIR)/$(SRC_DIR)/%.o : $(SRC_DIR)/%.c
+all: build-sandbox build-tests
+
+$(BUILD_DIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR)/$(SANDBOX_DIR)/%.o : $(SANDBOX_DIR)/%.c
+$(BUILD_DIR)/$(SANDBOX_DIR)/%.o: $(SANDBOX_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR)/$(TESTS_DIR)/%.o : $(TESTS_DIR)/%.c	
+$(BUILD_DIR)/$(TESTS_DIR)/%.o: $(TESTS_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR)/$(MICROUI_DIR)/%.o : $(MICROUI_DIR)/%.c
+$(BUILD_DIR)/$(MICROUI_DIR)/%.o: $(MICROUI_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_BIN_DIR)/$(SANDBOX_TARGET) : $(SANDBOX_OBJS)
+$(BUILD_BIN_DIR)/$(SANDBOX_TARGET): $(SANDBOX_OBJS)
 	mkdir -p $(BUILD_BIN_DIR)
 	$(CC) $(CFLAGS) $(SANDBOX_OBJS) -o $@ $(INC_FLAGS)
 
-$(BUILD_BIN_DIR)/$(TESTS_TARGET) : $(TESTS_OBJS)
+$(BUILD_BIN_DIR)/%.bin: $(BUILD_DIR)/$(TESTS_DIR)/%.o
 	mkdir -p $(BUILD_BIN_DIR)
-	$(CC) $(CFLAGS) $(TESTS_OBJS) -o $@ $(INC_FLAGS)
+	$(CC) $(CFLAGS) $(OBJS) $< -o $@ $(INC_FLAGS)
 
-all : build-sandbox build-test
+build-sandbox: $(BUILD_BIN_DIR)/$(SANDBOX_TARGET)
+build-tests: $(TESTS_BINS)
 
-build-sandbox : $(BUILD_BIN_DIR)/$(SANDBOX_TARGET)
+run-sandbox: 
+	@$(BUILD_BIN_DIR)/$(SANDBOX_TARGET)
 
-build-test : $(BUILD_BIN_DIR)/$(TESTS_TARGET)
+run-tests: $(TESTS_BINS)
+	@for bin_file in $(TESTS_BINS); do \
+		$$bin_file; \
+	done
 
-run-sandbox :
-	$(BUILD_BIN_DIR)/$(SANDBOX_TARGET)
-
-run-test :
-	$(BUILD_BIN_DIR)/$(TESTS_TARGET)
-
-pre-build :
+pre-build:
 	mkdir -p build/assets/shaders
 	/usr/bin/glslc assets/shaders/simple.vert -o build/assets/shaders/simple.vert.spv
 	/usr/bin/glslc assets/shaders/simple.frag -o build/assets/shaders/simple.frag.spv
 
-clean :
+clean:
 	rm -f compile_commands.json
 	rm -rf .cache
 	rm -rf $(BUILD_DIR)

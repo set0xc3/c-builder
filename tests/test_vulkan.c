@@ -19,15 +19,19 @@ test_get_extensions(void)
 int
 main(void)
 {
+  LOG_INFO("[TEST] [VULKAN]\n");
+
   os_startup(false);
 
-  if (test_get_extensions()) {
-    LOG_INFO("[TEST] [OK] test_get_extensions\n");
+  if (!test_get_extensions()) {
+    return 0;
   }
+  LOG_INFO("[TEST] [OK] test_get_extensions\n");
 
-  if (check_validation_layer_support()) {
-    LOG_INFO("[TEST] [OK] check_validation_layer_support\n");
+  if (!check_validation_layer_support()) {
+    return 0;
   }
+  LOG_INFO("[TEST] [OK] check_validation_layer_support\n");
 
   vulkan_init();
   vulkan_instance_create();
@@ -39,7 +43,6 @@ main(void)
   vulkan_physical_device_create();
   vulkan_pipeline_create(str_lit("assets/shaders/simple.vert"),
                          str_lit("assets/shaders/simple.frag"));
-
 
   os_shutdown();
 
