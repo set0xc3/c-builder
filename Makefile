@@ -33,7 +33,9 @@ TESTS_SRCS		:= $(shell find $(TESTS_DIR) -type f -name '*.c')
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/$(SRC_DIR)/%.o, $(SRCS)) \
         $(patsubst $(MICROUI_DIR)/%.c, $(BUILD_DIR)/$(MICROUI_DIR)/%.o, $(MICROUI_SRCS))
 
-TESTS_OBJS := $(patsubst $(TESTS_DIR)/%.c, $(BUILD_DIR)/$(TESTS_DIR)/%.o, $(TESTS_SRCS))
+TESTS_OBJS := $(OBJS)
+TESTS_OBJS += $(patsubst $(TESTS_DIR)/%.c, $(BUILD_DIR)/$(TESTS_DIR)/%.o, $(TESTS_SRCS))
+
 TESTS_BINS := $(patsubst $(BUILD_DIR)/$(TESTS_DIR)/%.o, $(BUILD_BIN_DIR)/%.bin, $(TESTS_OBJS))
 
 SANDBOX_OBJS := $(OBJS)
@@ -51,11 +53,11 @@ $(BUILD_DIR)/$(SANDBOX_DIR)/%.o: $(SANDBOX_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR)/$(TESTS_DIR)/%.o: $(TESTS_DIR)/%.c
+$(BUILD_DIR)/$(MICROUI_DIR)/%.o: $(MICROUI_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR)/$(MICROUI_DIR)/%.o: $(MICROUI_DIR)/%.c
+$(BUILD_DIR)/$(TESTS_DIR)/%.o: $(TESTS_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -63,7 +65,7 @@ $(BUILD_BIN_DIR)/$(SANDBOX_TARGET): $(SANDBOX_OBJS)
 	mkdir -p $(BUILD_BIN_DIR)
 	$(CC) $(CFLAGS) $(SANDBOX_OBJS) -o $@ $(INC_FLAGS)
 
-$(BUILD_BIN_DIR)/%.bin: $(BUILD_DIR)/$(TESTS_DIR)/%.o
+$(BUILD_BIN_DIR)/%.bin: $(BUILD_DIR)/$(TESTS_DIR)/%.o $(TESTS_OBJS)
 	mkdir -p $(BUILD_BIN_DIR)
 	$(CC) $(CFLAGS) $(OBJS) $< -o $@ $(INC_FLAGS)
 
@@ -73,10 +75,15 @@ build-tests: $(TESTS_BINS)
 run-sandbox: 
 	@$(BUILD_BIN_DIR)/$(SANDBOX_TARGET)
 
-run-tests: $(TESTS_BINS)
-	@for bin_file in $(TESTS_BINS); do \
-		$$bin_file; \
-	done
+test-os:
+	@$(BUILD_BIN_DIR)/test_os.bin
+
+test-vulkan:
+	@$(BUILD_BIN_DIR)/test_vulkan.bin
+
+tests: \
+	test-os \
+	test-vulkan
 
 pre-build:
 	mkdir -p build/assets/shaders
