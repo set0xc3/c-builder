@@ -1,7 +1,7 @@
 #pragma once
 
-#include "base/defines.h"
-#include "base/vector.h"
+#include "core/defines.h"
+#include "core/vector.h"
 
 API void renderer_startup(void);
 API void renderer_flush(void);

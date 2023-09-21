@@ -1,9 +1,4 @@
-#include "base/defines.h"
-#include "base/log.h"
-#include "base/math.h"
-#include "base/string.h"
-#include "base/uuid.h"
-#include "base/vector.h"
+#include "core.h"
 #include "os/os.h"
 #include "renderer/renderer.h"
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "base/defines.h"
-#include "base/string.h"
-#include "base/uuid.h"
+#include "core/defines.h"
+#include "core/string.h"
+#include "core/uuid.h"
 
 #include <SDL2/SDL.h>
 

@@ -7,6 +7,7 @@ typedef enum LoggerType {
   LoggerType_Debug,
   LoggerType_Warn,
   LoggerType_Err,
+  LoggerType_Fatal,
   LoggerType_Count,
 } LoggerType;
 
@@ -27,5 +28,9 @@ API void log_print(u32 type, const char *time, const char *file_path, u32 line,
 
 #define LOG_ERR(format, ...)                                                  \
   log_print(LoggerType_Err, __TIME__, __FILE__, __LINE__, format,             \
+            ##__VA_ARGS__);
+
+#define LOG_FATAL(format, ...)                                                \
+  log_print(LoggerType_Fatal, __TIME__, __FILE__, __LINE__, format,           \
             ##__VA_ARGS__);                                                   \
   assert(false)

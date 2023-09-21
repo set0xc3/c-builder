@@ -1,10 +1,7 @@
 #include "log.h"
 
 const char *logger_types_string[LoggerType_Count] = {
-  "INFO",
-  "DEBUG",
-  "WARN",
-  "ERR",
+  "INFO", "DEBUG", "WARN", "ERR", "FATAL",
 };
 
 void

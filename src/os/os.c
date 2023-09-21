@@ -1,7 +1,7 @@
 #include "os.h"
 
-#include "base/log.h"
-#include "base/string.h"
+#include "core/log.h"
+#include "core/string.h"
 
 #include <SDL2/SDL.h>
 #include <time.h>

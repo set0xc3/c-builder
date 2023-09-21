@@ -1,7 +1,7 @@
 #pragma once
 
-#include "base/defines.h"
-#include "base/string.h"
+#include "core/defines.h"
+#include "core/string.h"
 
 #include <vulkan/vulkan.h>
 
