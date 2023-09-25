@@ -1,4 +1,4 @@
-#include <base/log.h>
+#include <core.h>
 #include <os/os.h>
 #include <renderer/vulkan.h>
 
@@ -36,7 +36,7 @@ main(void)
   vulkan_init();
   vulkan_instance_create();
 
-  setup_debug_messenger();
+  debug_messenger_init();
 
   vulkan_surface_create();
   vulkan_physical_device_pick();

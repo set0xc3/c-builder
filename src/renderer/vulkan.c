@@ -170,16 +170,16 @@ check_device_extension_support(VkPhysicalDevice device)
 }
 
 b32
-setup_debug_messenger(void)
+debug_messenger_init(void)
 {
   if (!enable_validation_layers) {
     return false;
   }
 
   VkDebugUtilsMessengerCreateInfoEXT create_info = { 0 };
-  create_debug_messenger_information(&create_info);
+  debug_messenger_information_create(&create_info);
 
-  if (create_debug_utils_messenger_ext(ctx->instance, &create_info, NULL,
+  if (debug_utils_messenger_ext_create(ctx->instance, &create_info, NULL,
                                        &ctx->debug_messenger)
       != VK_SUCCESS) {
     LOG_ERR("[VK] Failed to set up debug messenger\n");
@@ -190,7 +190,7 @@ setup_debug_messenger(void)
 }
 
 void
-create_debug_messenger_information(
+debug_messenger_information_create(
     VkDebugUtilsMessengerCreateInfoEXT *create_info)
 {
   create_info->sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
@@ -205,7 +205,7 @@ create_debug_messenger_information(
 }
 
 VkResult
-create_debug_utils_messenger_ext(
+debug_utils_messenger_ext_create(
     VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo,
     const VkAllocationCallbacks *pAllocator,
     VkDebugUtilsMessengerEXT    *pDebugMessenger)
@@ -222,7 +222,7 @@ create_debug_utils_messenger_ext(
 }
 
 void
-destroy_debug_utils_messenger_ext(VkInstance                   instance,
+debug_utils_messenger_ext_destroy(VkInstance                   instance,
                                   VkDebugUtilsMessengerEXT     debugMessenger,
                                   const VkAllocationCallbacks *pAllocator)
 {
@@ -236,7 +236,7 @@ destroy_debug_utils_messenger_ext(VkInstance                   instance,
 }
 
 b32
-is_device_suitable(VkPhysicalDevice device)
+device_suitable_is_valid(VkPhysicalDevice device)
 {
   QueueFamilyIndices indices = find_queue_families(device);
   b32 extensions_supported   = check_device_extension_support(device);
@@ -302,7 +302,7 @@ vulkan_destroy(void)
   vkDestroyDevice(ctx->device, NULL);
 
   if (enable_validation_layers) {
-    destroy_debug_utils_messenger_ext(ctx->instance, ctx->debug_messenger,
+    debug_utils_messenger_ext_destroy(ctx->instance, ctx->debug_messenger,
                                       NULL);
   }
 
@@ -357,7 +357,7 @@ vulkan_instance_create(void)
         = (VkDebugUtilsMessengerCreateInfoEXT *)&debug_create_info;
     create_info.ppEnabledLayerNames = validation_layers;
     create_info.enabledLayerCount   = ArrayCount(validation_layers);
-    create_debug_messenger_information(&debug_create_info);
+    debug_messenger_information_create(&debug_create_info);
   }
 
   if (vkCreateInstance(&create_info, NULL, &ctx->instance) != VK_SUCCESS) {
@@ -398,7 +398,7 @@ vulkan_physical_device_pick(void)
                              physical_device_list);
 
   for (u32 i = 0; i < device_count; i++) {
-    if (is_device_suitable(physical_device_list[i])) {
+    if (device_suitable_is_valid(physical_device_list[i])) {
       ctx->gpu = physical_device_list[0];
       vkGetPhysicalDeviceProperties(ctx->gpu, &ctx->properties);
       break;
@@ -475,6 +475,9 @@ vulkan_pipeline_create(const String vert_filepath, const String frag_filepath)
   if (!vulkan_pipeline_shader_create(frag_source, &frag_shader_module)) {
     LOG_ERR("[VK] Failed to create frag_shader_module\n");
   }
+
+  VkPipelineLayoutCreateInfo pipeline_layout_info
+      = vulkan_pipeline_layout_create_info();
 }
 
 b32
@@ -495,4 +498,138 @@ vulkan_pipeline_shader_create(const String    file_source,
   }
 
   return true;
+}
+
+VkPipeline
+vulkan_pipeline_builder(PipelineBuilder *self, VkDevice device,
+                        VkRenderPass pass)
+{
+  VkPipelineViewportStateCreateInfo viewportState = { 0 };
+  viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+  viewportState.pNext = NULL;
+
+  viewportState.viewportCount = 1;
+  viewportState.pViewports    = &self->viewport;
+  viewportState.scissorCount  = 1;
+  viewportState.pScissors     = &self->scissor;
+
+  VkPipelineColorBlendStateCreateInfo colorBlending = { 0 };
+  colorBlending.sType
+      = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+  colorBlending.pNext = NULL;
+
+  colorBlending.logicOpEnable   = VK_FALSE;
+  colorBlending.logicOp         = VK_LOGIC_OP_COPY;
+  colorBlending.attachmentCount = 1;
+  colorBlending.pAttachments    = &self->color_blend_attachment;
+
+  VkGraphicsPipelineCreateInfo pipelineInfo = { 0 };
+  pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+  pipelineInfo.pNext = NULL;
+
+  pipelineInfo.stageCount          = self->shader_stage_count;
+  pipelineInfo.pStages             = self->shader_stages;
+  pipelineInfo.pVertexInputState   = &self->vertex_input_info;
+  pipelineInfo.pInputAssemblyState = &self->input_assembly;
+  pipelineInfo.pViewportState      = &viewportState;
+  pipelineInfo.pRasterizationState = &self->rasterizer;
+  pipelineInfo.pMultisampleState   = &self->multisampling;
+  pipelineInfo.pColorBlendState    = &colorBlending;
+  pipelineInfo.layout              = self->pipeline_layout;
+  pipelineInfo.renderPass          = pass;
+  pipelineInfo.subpass             = 0;
+  pipelineInfo.basePipelineHandle  = VK_NULL_HANDLE;
+
+  VkPipeline newPipeline;
+  if (vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, NULL,
+                                &newPipeline)
+      != VK_SUCCESS) {
+    LOG_ERR("failed to create pipeline\n");
+    return VK_NULL_HANDLE;
+  } else {
+    return newPipeline;
+  }
+}
+
+VkPipelineShaderStageCreateInfo
+vulkan_pipeline_shader_stage_create_info(VkShaderStageFlagBits stage,
+                                         VkShaderModule        shader_module)
+{
+  VkPipelineShaderStageCreateInfo info = { 0 };
+  info.sType  = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+  info.pNext  = NULL;
+  info.stage  = stage;
+  info.module = shader_module;
+  info.pName  = "main";
+  return info;
+}
+
+VkPipelineVertexInputStateCreateInfo
+vulkan_vertex_input_state_create_info(void)
+{
+  VkPipelineVertexInputStateCreateInfo info = { 0 };
+  info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+  info.pNext = NULL;
+  info.vertexBindingDescriptionCount   = 0;
+  info.vertexAttributeDescriptionCount = 0;
+  return info;
+}
+
+VkPipelineInputAssemblyStateCreateInfo
+vulkan_input_assembly_create_info(VkPrimitiveTopology topology)
+{
+  VkPipelineInputAssemblyStateCreateInfo info = { 0 };
+  info.sType    = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+  info.pNext    = NULL;
+  info.topology = topology;
+  info.primitiveRestartEnable = VK_FALSE;
+  return info;
+}
+
+VkPipelineRasterizationStateCreateInfo
+vulkan_rasterization_state_create_info(VkPolygonMode polygon_mode)
+{
+  VkPipelineRasterizationStateCreateInfo info = { 0 };
+  info.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+  info.pNext = NULL;
+  info.depthClampEnable        = VK_FALSE;
+  info.rasterizerDiscardEnable = VK_FALSE;
+  info.polygonMode             = polygon_mode;
+  info.lineWidth               = 1.0f;
+  info.cullMode                = VK_CULL_MODE_NONE;
+  info.frontFace               = VK_FRONT_FACE_CLOCKWISE;
+  info.depthBiasEnable         = VK_FALSE;
+  info.depthBiasConstantFactor = 0.0f;
+  info.depthBiasClamp          = 0.0f;
+  info.depthBiasSlopeFactor    = 0.0f;
+  return info;
+}
+
+VkPipelineMultisampleStateCreateInfo
+vulkan_multisampling_state_create_info(void)
+{
+  VkPipelineMultisampleStateCreateInfo info = { 0 };
+  info.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+  info.pNext = NULL;
+  info.sampleShadingEnable   = VK_FALSE;
+  info.rasterizationSamples  = VK_SAMPLE_COUNT_1_BIT;
+  info.minSampleShading      = 1.0f;
+  info.pSampleMask           = NULL;
+  info.alphaToCoverageEnable = VK_FALSE;
+  info.alphaToOneEnable      = VK_FALSE;
+  return info;
+}
+
+VkPipelineLayoutCreateInfo
+vulkan_pipeline_layout_create_info(void)
+{
+  VkPipelineLayoutCreateInfo info = { 0 };
+  info.sType                  = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+  info.pNext                  = NULL;
+  info.flags                  = 0;
+  info.setLayoutCount         = 0;
+  info.pSetLayouts            = NULL;
+  info.pushConstantRangeCount = 0;
+  info.pPushConstantRanges    = NULL;
+  return info;
 }

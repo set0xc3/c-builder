@@ -22,14 +22,26 @@ typedef struct QueueFamilyIndices {
   u32 present_family_index;
 } QueueFamilyIndices;
 
-// typedef struct PipelineConfigInfo {
-// } PipelineConfigInfo;
-
 typedef struct PipelineContext {
   VkPipeline     graphics_pipeline;
   VkShaderModule vert_shader_module;
   VkShaderModule frag_shader_module;
 } PipelineContext;
+
+typedef struct PipelineBuilder {
+  VkPipelineShaderStageCreateInfo *shader_stages;
+  u64                              shader_stage_count;
+
+  VkPipelineVertexInputStateCreateInfo   vertex_input_info;
+  VkPipelineInputAssemblyStateCreateInfo input_assembly;
+  VkViewport                             viewport;
+  VkRect2D                               scissor;
+  VkPipelineRasterizationStateCreateInfo rasterizer;
+  VkPipelineColorBlendAttachmentState    color_blend_attachment;
+  VkPipelineMultisampleStateCreateInfo   multisampling;
+  VkPipelineLayout                       pipeline_layout;
+
+} PipelineBuilder;
 
 typedef struct VulkanContext {
   VkDebugUtilsMessengerEXT debug_messenger;
@@ -41,6 +53,9 @@ typedef struct VulkanContext {
   VkQueue                    present_queue;
   VkPhysicalDevice           gpu;
   VkPhysicalDeviceProperties properties;
+
+  VkPipeline       triangle_pipeline;
+  VkPipelineLayout triangle_pipeline_layout;
 } VulkanContext;
 
 QueueFamilyIndices find_queue_families(VkPhysicalDevice _device);
@@ -50,22 +65,22 @@ b32 get_required_extensions(const char **out_extension_names,
 b32 check_validation_layer_support(void);
 b32 check_device_extension_support(VkPhysicalDevice device);
 
-b32 setup_debug_messenger(void);
+b32 debug_messenger_init(void);
 
-void create_debug_messenger_information(
+void debug_messenger_information_create(
     VkDebugUtilsMessengerCreateInfoEXT *create_info);
 
-VkResult create_debug_utils_messenger_ext(
+VkResult debug_utils_messenger_ext_create(
     VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo,
     const VkAllocationCallbacks *pAllocator,
     VkDebugUtilsMessengerEXT    *pDebugMessenger);
 
 void
-destroy_debug_utils_messenger_ext(VkInstance                   instance,
+debug_utils_messenger_ext_destroy(VkInstance                   instance,
                                   VkDebugUtilsMessengerEXT     debugMessenger,
                                   const VkAllocationCallbacks *pAllocator);
 
-b32 is_device_suitable(VkPhysicalDevice device);
+b32 device_suitable_is_valid(VkPhysicalDevice device);
 
 SwapChainSupportDetails query_swapchain_support(VkPhysicalDevice device);
 
@@ -83,3 +98,26 @@ API void vulkan_pipeline_create(const String vert_filepath,
                                 const String frag_filepath);
 API b32  vulkan_pipeline_shader_create(const String    file_source,
                                        VkShaderModule *shader_module);
+
+API VkPipeline vulkan_pipeline_builder(PipelineBuilder *self, VkDevice device,
+                                       VkRenderPass pass);
+
+API VkPipelineShaderStageCreateInfo vulkan_pipeline_shader_stage_create_info(
+    VkShaderStageFlagBits stage, VkShaderModule shader_module);
+
+API VkPipelineVertexInputStateCreateInfo
+vulkan_vertex_input_state_create_info(void);
+
+API VkPipelineInputAssemblyStateCreateInfo
+vulkan_input_assembly_create_info(VkPrimitiveTopology topology);
+
+API VkPipelineRasterizationStateCreateInfo
+vulkan_rasterization_state_create_info(VkPolygonMode polygon_mode);
+
+API VkPipelineMultisampleStateCreateInfo
+vulkan_multisampling_state_create_info(void);
+
+API VkPipelineColorBlendAttachmentState
+vulkan_color_blend_attachment_state(void);
+
+API VkPipelineLayoutCreateInfo vulkan_pipeline_layout_create_info(void);
