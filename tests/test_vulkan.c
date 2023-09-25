@@ -1,4 +1,5 @@
-#include <core.h>
+#include <base.h>
+
 #include <os/os.h>
 #include <renderer/vulkan.h>
 
@@ -21,7 +22,7 @@ main(void)
 {
   LOG_INFO("[TEST] [VULKAN]\n");
 
-  os_startup(false);
+  os_init(false);
 
   if (!test_get_extensions()) {
     return 0;
@@ -44,7 +45,7 @@ main(void)
   vulkan_pipeline_create(str_lit("build/assets/shaders/simple.vert.spv"),
                          str_lit("build/assets/shaders/simple.frag.spv"));
 
-  os_shutdown();
+  os_destroy();
 
   return 0;
 }

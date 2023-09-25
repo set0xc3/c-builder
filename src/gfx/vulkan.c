@@ -1,8 +1,9 @@
 #include "vulkan.h"
 
-#include "core/defines.h"
-#include "core/log.h"
-#include "core/string.h"
+#include "base/defines.h"
+#include "base/log.h"
+#include "base/string.h"
+
 #include "os/os.h"
 
 #include <SDL2/SDL.h>
@@ -88,11 +89,11 @@ get_required_extensions(const char **out_extension_names,
 {
   OS_Window *window = os_window_root_get();
 
-  SDL_Vulkan_GetInstanceExtensions(window->sdl.handle, out_extension_count,
+  SDL_Vulkan_GetInstanceExtensions(window->sdl.window, out_extension_count,
                                    NULL);
 
   if (enable_validation_layers) {
-    SDL_Vulkan_GetInstanceExtensions(window->sdl.handle, out_extension_count,
+    SDL_Vulkan_GetInstanceExtensions(window->sdl.window, out_extension_count,
                                      out_extension_names);
 
     *out_extension_count += 1;
@@ -104,7 +105,7 @@ get_required_extensions(const char **out_extension_names,
     static char *str_ext = VK_EXT_DEBUG_UTILS_EXTENSION_NAME;
     out_extension_names[*out_extension_count - 1] = str_ext;
   } else {
-    SDL_Vulkan_GetInstanceExtensions(window->sdl.handle, out_extension_count,
+    SDL_Vulkan_GetInstanceExtensions(window->sdl.window, out_extension_count,
                                      out_extension_names);
   }
 
@@ -372,7 +373,7 @@ b32
 vulkan_surface_create(void)
 {
   OS_Window *window = os_window_root_get();
-  if (SDL_Vulkan_CreateSurface(window->sdl.handle, ctx->instance,
+  if (SDL_Vulkan_CreateSurface(window->sdl.window, ctx->instance,
                                &ctx->surface)
       == SDL_FALSE) {
     return false;

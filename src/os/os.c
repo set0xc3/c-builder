@@ -1,15 +1,14 @@
 #include "os.h"
 
-#include "core/log.h"
-#include "core/string.h"
+#include "base/log.h"
+#include "base/string.h"
 
-#include <SDL2/SDL.h>
 #include <time.h>
 
 static OS_Context *ctx;
 
 b32
-os_startup(b32 console)
+os_init(b32 console)
 {
   ctx             = malloc(sizeof(OS_Context));
   ctx->is_console = console;
@@ -30,7 +29,7 @@ os_startup(b32 console)
 }
 
 b32
-os_shutdown(void)
+os_destroy(void)
 {
   if (!ctx->is_console) {
     os_window_close(ctx->root_window);
@@ -170,15 +169,24 @@ os_window_open(const char *title, i32 xpos, i32 ypos, i32 width, i32 height)
   out_window->rect.width  = width;
   out_window->rect.height = height;
 
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
   u32 window_flags
-      = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_VULKAN;
-  out_window->sdl.handle = SDL_CreateWindow(
+      = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
+
+  out_window->sdl.window = SDL_CreateWindow(
       out_window->title, out_window->rect.x, out_window->rect.y,
       out_window->rect.width, out_window->rect.height, window_flags);
-  if (!out_window->sdl.handle) {
-    LOG_ERR("[SDL] Failed create window\n");
-    free(out_window);
-    return false;
+
+  if (!out_window->sdl.window) {
+    LOG_FATAL("[SDL] Failed create window\n");
+  }
+
+  out_window->sdl.gl_ctx = SDL_GL_CreateContext(out_window->sdl.window);
+
+  if (!out_window->sdl.gl_ctx) {
+    LOG_FATAL("[SDL] Failed create opengl context\n");
   }
 
   return out_window;
@@ -188,7 +196,7 @@ b32
 os_window_close(OS_Window *window)
 {
   if (window) {
-    SDL_DestroyWindow(window->sdl.handle);
+    SDL_DestroyWindow(window->sdl.window);
     free(window);
   }
 
@@ -198,7 +206,7 @@ os_window_close(OS_Window *window)
 void
 os_window_swap_buffer(OS_Window *window)
 {
-  SDL_GL_SwapWindow(window->sdl.handle);
+  SDL_GL_SwapWindow(window->sdl.window);
 }
 
 OS_Window *

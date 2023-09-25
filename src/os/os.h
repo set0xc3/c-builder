@@ -1,10 +1,11 @@
 #pragma once
 
-#include "core/defines.h"
-#include "core/string.h"
-#include "core/uuid.h"
+#include "base/defines.h"
+#include "base/string.h"
+#include "base/uuid.h"
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 
 typedef struct OS_Library {
   Uuid  uuid;
@@ -17,7 +18,8 @@ typedef struct OS_Window {
   const char *title;
 
   struct {
-    SDL_Window *handle;
+    SDL_Window   *window;
+    SDL_GLContext gl_ctx;
   } sdl;
 
   struct {
@@ -31,8 +33,8 @@ typedef struct OS_Context {
   OS_Window *root_window;
 } OS_Context;
 
-API b32 os_startup(b32 console);
-API b32 os_shutdown(void);
+API b32 os_init(b32 console);
+API b32 os_destroy(void);
 
 API b32    os_poll_event(void);
 API void   os_delay(u32 ms);

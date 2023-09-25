@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/defines.h"
+#include "defines.h"
 
 typedef struct MemoryArena {
   void *data;
