@@ -1,8 +1,5 @@
 #include "os.h"
 
-#include "base/log.h"
-#include "base/string.h"
-
 #include <time.h>
 
 static OS_Context *ctx;

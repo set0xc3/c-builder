@@ -1,7 +1,7 @@
 #pragma once
 
-#include "base/defines.h"
-#include "base/vector.h"
+#include "core/base.h"
+#include "core/os.h"
 
 typedef struct DrawVertex DrawVertex;
 typedef struct DrawCmd    DrawCmd;

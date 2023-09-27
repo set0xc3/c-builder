@@ -1,6 +1,5 @@
-#include "base.h"
-
-#include "os/os.h"
+#include "core/base.h"
+#include "core/os.h"
 
 int
 main(void)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base/defines.h"
+#include "core/base.h"
 
 typedef struct OpenGLState {
   b32 is_init;

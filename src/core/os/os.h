@@ -1,8 +1,6 @@
 #pragma once
 
-#include "base/defines.h"
-#include "base/string.h"
-#include "base/uuid.h"
+#include "core/base.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>

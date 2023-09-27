@@ -1,7 +1,6 @@
-#include <base.h>
-
-#include <os/os.h>
-#include <renderer/vulkan.h>
+#include <core/base.h>
+#include <core/gfx.h>
+#include <core/os.h>
 
 b32
 test_get_extensions(void)

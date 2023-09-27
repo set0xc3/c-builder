@@ -1,8 +1,5 @@
 #include "gfx.h"
 
-#include "base/log.h"
-#include "os/os.h"
-
 #define BUFFER_SIZE 16384
 
 static int buf_idx = 0;

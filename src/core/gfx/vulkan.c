@@ -1,11 +1,5 @@
 #include "vulkan.h"
 
-#include "base/defines.h"
-#include "base/log.h"
-#include "base/string.h"
-
-#include "os/os.h"
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_vulkan.h>
 

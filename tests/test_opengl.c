@@ -1,8 +1,6 @@
-#include "base.h"
-
-#include "gfx/gfx.h"
-#include "gfx/opengl.h"
-#include "os/os.h"
+#include "core/base.h"
+#include "core/gfx.h"
+#include "core/os.h"
 
 int
 main(void)
