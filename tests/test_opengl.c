@@ -1,6 +1,36 @@
 #include "core/base.h"
 #include "core/gfx.h"
+#include "core/intrinsics.h"
 #include "core/os.h"
+
+const u32 width  = 800;
+const u32 height = 600;
+
+#define BUFFER_SIZE 16384
+
+static f32 vtx_buffers[BUFFER_SIZE * 8];
+static f32 color_buffers[BUFFER_SIZE * 16];
+static u32 idx_buffers[BUFFER_SIZE * 6];
+
+static u32 object_count;
+
+static void
+flush(void)
+{
+  if (object_count == 0) {
+    return;
+  }
+
+  object_count = 0;
+}
+
+static void
+push_quad(Vector2 dst, Vector2 src, Color color)
+{
+  if (object_count == BUFFER_SIZE) {
+    flush();
+  }
+}
 
 int
 main(void)
@@ -11,26 +41,17 @@ main(void)
   os_init(false);
   opengl_init();
 
-  DrawList draw_list = { 0 };
-  draw_list._points  = malloc(1024 * sizeof(Point));
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glDisable(GL_CULL_FACE);
+  glDisable(GL_DEPTH_TEST);
+  glEnable(GL_SCISSOR_TEST);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
 
   while (os_poll_event()) {
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-
-    glLoadIdentity();
-
-    glBegin(GL_LINES);
-    {
-      glColor3f(1, 0, 1);
-      glVertex2f(0, 0);
-
-      glColor3f(1, 0, 1);
-      glVertex2f(1, 1);
-    }
-    glEnd();
-
-    glPopMatrix();
 
     os_window_swap_buffer(os_window_root_get());
 

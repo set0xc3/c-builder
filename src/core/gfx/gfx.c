@@ -38,16 +38,29 @@ gfx_present(void)
 }
 
 void
-gfx_draw_add_line(DrawList *draw_list, const Vector2 p1, const Vector2 p2,
-                  const Color color, const f32 thickness)
+gfx_draw_line(DrawList *draw_list, const Vector2 p1, const Vector2 p2,
+              const Color color, const f32 thickness)
 {
-  Vector2 *pos = NULL;
+  DrawVertex vertices[2] = {
+    { vec3_init(p1.x, p1.y, 0) },
+    { vec3_init(p2.x, p2.y, 0) },
+  };
 
-  pos    = (Vector2 *)draw_list->_points + draw_list->_point_count;
-  pos->x = p1.x;
-  pos->y = p1.y;
+  DrawCmd cmd = {
+    .vtx_offset = draw_list->vtx_buffer_count,
+    .vtx_count  = ArrayCount(vertices),
+  };
 
-  pos    = (Vector2 *)draw_list->_points + draw_list->_point_count + 1;
-  pos->x = p2.x;
-  pos->y = p2.y;
+  u8 *vtx_buffer = (u8 *)draw_list->vtx_buffers;
+  memcpy(vtx_buffer + (cmd.vtx_offset * sizeof(DrawVertex)), vertices,
+         sizeof(vertices));
+
+  u8 *color_buffer = (u8 *)draw_list->color_buffers;
+  memcpy(vtx_buffer + (cmd.vtx_offset * sizeof(DrawVertex)), vertices,
+         sizeof(vertices));
+
+  draw_list->vtx_buffer_count += cmd.vtx_count;
+
+  draw_list->cmd_buffers[draw_list->cmd_buffer_count] = cmd;
+  draw_list->cmd_buffer_count++;
 }
