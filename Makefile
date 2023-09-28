@@ -79,6 +79,9 @@ build-shaders:
 	/usr/bin/glslc assets/shaders/simple.vert -o $(BUILD_DIR)/assets/shaders/simple.vert.spv
 	/usr/bin/glslc assets/shaders/simple.frag -o $(BUILD_DIR)/assets/shaders/simple.frag.spv
 
+test-intrusive:
+	@$(BUILD_BIN_DIR)/test_intrusive.bin
+
 test-opengl:
 	@$(BUILD_BIN_DIR)/test_opengl.bin
 
@@ -89,6 +92,7 @@ test-vulkan:
 	@$(BUILD_BIN_DIR)/test_vulkan.bin
 
 tests: \
+	test-intrusive \
 	test-opengl \
 	test-os \
 	test-vulkan
