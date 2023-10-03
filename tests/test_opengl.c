@@ -1,7 +1,4 @@
-#include "core/base.h"
-#include "core/gfx.h"
-#include "core/intrinsics.h"
-#include "core/os.h"
+#include <cbased.h>
 
 const u32 width  = 800;
 const u32 height = 600;

@@ -1,6 +1,4 @@
-#include "core/base.h"
-#include "core/container.h"
-#include "core/intrinsics.h"
+#include <cbased.h>
 
 typedef struct Entity Entity;
 

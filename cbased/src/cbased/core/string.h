@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "defines.h"
+#include "cbased/core/base.h"
 
 typedef struct String String;
 

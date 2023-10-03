@@ -1,8 +1,8 @@
 #pragma once
 
-#include "defines.h"
-#include "math.h"
-#include "vector.h"
+#include "cbased/core/base.h"
+#include "cbased/core/math.h"
+#include "cbased/core/vector.h"
 
 #include <math.h>
 

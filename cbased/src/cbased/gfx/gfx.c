@@ -7,11 +7,23 @@ static int buf_idx = 0;
 void
 gfx_init(void)
 {
+  opengl_init();
 }
 
 void
 gfx_destroy(void)
 {
+}
+
+void
+gfx_begin(u32 x, u32 y, u32 width, u32 height)
+{
+  opengl_viewport_set(x, y, width, height);
+}
+void
+gfx_background_set(f32 r, f32 g, f32 b, f32 a)
+{
+  opengl_background_set(r, g, b, a);
 }
 
 void

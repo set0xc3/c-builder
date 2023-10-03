@@ -1,9 +1,9 @@
 #pragma once
 
-#include "defines.h"
-#include "matrix.h"
-#include "quaternion.h"
-#include "vector.h"
+#include "cbased/core/base.h"
+#include "cbased/core/matrix.h"
+#include "cbased/core/quaternion.h"
+#include "cbased/core/vector.h"
 
 typedef struct Transform {
   Vector3           position;
@@ -13,6 +13,10 @@ typedef struct Transform {
   struct Transform *parent;
   b32               is_dirty;
 } Transform;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 API Transform transform_create(Vector3 position, Vector4 rotation,
                                Vector3 scale);
@@ -39,3 +43,7 @@ API void    transform_scale_set(Transform *transform, Vector3 scale);
 
 API Transform *transform_parent_get(Transform *transform);
 API void       transform_parent_set(Transform *transform, Transform *parent);
+
+#ifdef __cplusplus
+}
+#endif

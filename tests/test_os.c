@@ -1,5 +1,4 @@
-#include "core/base.h"
-#include "core/os.h"
+#include <cbased.h>
 
 int
 main(void)

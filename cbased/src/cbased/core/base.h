@@ -73,3 +73,7 @@ typedef i64 b64;
 #define INLINE static inline
 #define NOINLINE
 #endif
+
+#define type_has_field(type, field)      offsetof(type, field)
+#define type_field_type(type, field)     typeof(((type *)0)->field)
+#define offset_of_by_string(type, field) ((size_t)(&((type *)0)->field))

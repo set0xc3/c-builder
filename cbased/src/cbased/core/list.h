@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/base.h"
-#include "core/intrinsics.h"
+#include "cbased/core/base.h"
+#include "cbased/core/list.h"
 
 typedef struct DLL_Node     DLL_Node;
 typedef struct DLL_List     DLL_List;

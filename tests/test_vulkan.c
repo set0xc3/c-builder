@@ -1,6 +1,4 @@
-#include <core/base.h>
-#include <core/gfx.h>
-#include <core/os.h>
+#include <cbased.h>
 
 b32
 test_get_extensions(void)

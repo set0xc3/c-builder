@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/base.h"
-#include "core/os.h"
+#include "cbased/core/base.h"
+#include "cbased/os/os.h"
 
 #include <vulkan/vulkan.h>
 
@@ -57,6 +57,10 @@ typedef struct VulkanContext {
   VkPipeline       triangle_pipeline;
   VkPipelineLayout triangle_pipeline_layout;
 } VulkanContext;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 QueueFamilyIndices find_queue_families(VkPhysicalDevice _device);
 
@@ -121,3 +125,7 @@ API VkPipelineColorBlendAttachmentState
 vulkan_color_blend_attachment_state(void);
 
 API VkPipelineLayoutCreateInfo vulkan_pipeline_layout_create_info(void);
+
+#ifdef __cplusplus
+}
+#endif

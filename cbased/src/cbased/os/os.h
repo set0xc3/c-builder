@@ -1,6 +1,9 @@
 #pragma once
 
-#include "core/base.h"
+#include "cbased/core/base.h"
+#include "cbased/core/log.h"
+#include "cbased/core/string.h"
+#include "cbased/core/uuid.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
@@ -31,6 +34,10 @@ typedef struct OS_Context {
   OS_Window *root_window;
 } OS_Context;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 API b32 os_init(b32 console);
 API b32 os_destroy(void);
 
@@ -50,3 +57,7 @@ API b32        os_window_close(OS_Window *window);
 API void       os_window_swap_buffer(OS_Window *window);
 
 API OS_Window *os_window_root_get(void);
+
+#ifdef __cplusplus
+}
+#endif

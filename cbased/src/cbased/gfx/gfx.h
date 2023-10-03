@@ -1,7 +1,8 @@
 #pragma once
 
-#include "core/base.h"
-#include "core/os.h"
+#include "cbased/core/base.h"
+#include "cbased/core/vector.h"
+#include "cbased/os/os.h"
 
 typedef struct DrawVertex DrawVertex;
 typedef struct DrawCmd    DrawCmd;
@@ -33,11 +34,21 @@ struct DrawList {
   u32      cmd_buffer_count;
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 API void gfx_init(void);
 API void gfx_destroy(void);
+API void gfx_begin(u32 x, u32 y, u32 width, u32 height);
+API void gfx_background_set(f32 r, f32 g, f32 b, f32 a);
 API void gfx_flush(void);
 API void gfx_clear(Vector4 color);
 API void gfx_present(void);
 
 API void gfx_draw_line(DrawList *draw_list, const Vector2 p1, const Vector2 p2,
                        const Color color, const f32 thickness);
+
+#ifdef __cplusplus
+}
+#endif
