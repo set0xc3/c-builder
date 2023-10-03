@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(cb LANGUAGES C)
+set(TARGET cbased)
+project(${TARGET} LANGUAGES C)
 
 set(TARGET_ARCHITECTURE "x64")
 
@@ -14,9 +15,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 file(GLOB_RECURSE SRC_FILES       ${CMAKE_SOURCE_DIR}/src/*.c)
 file(GLOB_RECURSE GLAD_SRC_FILES  ${CMAKE_SOURCE_DIR}/vendor/glad/src/*.c)
 
-add_library(cb ${SRC_FILES} ${GLAD_SRC_FILES})
+add_library(${TARGET} ${SRC_FILES} ${GLAD_SRC_FILES})
 
-target_compile_options(cb PRIVATE 
+target_compile_options(${TARGET} PRIVATE 
   -g 
   -O0
   -Wall 
@@ -30,12 +31,12 @@ target_compile_options(cb PRIVATE
   -Wno-incompatible-library-redeclaration
 )
 
-target_include_directories(cb PRIVATE 
+target_include_directories(${TARGET} PRIVATE 
   ${CMAKE_SOURCE_DIR}/src 
   ${CMAKE_SOURCE_DIR}/vendor/glad/include
 )
 
-target_link_libraries(cb PRIVATE 
+target_link_libraries(${TARGET} PRIVATE 
   m 
   GL 
   vulkan 
