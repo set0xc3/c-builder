@@ -12,8 +12,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-file(GLOB_RECURSE SRC_FILES       ${CMAKE_SOURCE_DIR}/src/*.c)
-file(GLOB_RECURSE GLAD_SRC_FILES  ${CMAKE_SOURCE_DIR}/vendor/glad/src/*.c)
+file(GLOB_RECURSE SRC_FILES       src/*.c)
+file(GLOB_RECURSE GLAD_SRC_FILES  vendor/glad/src/*.c)
 
 add_library(${TARGET} ${SRC_FILES} ${GLAD_SRC_FILES})
 
@@ -32,8 +32,8 @@ target_compile_options(${TARGET} PRIVATE
 )
 
 target_include_directories(${TARGET} PRIVATE 
-  ${CMAKE_SOURCE_DIR}/src 
-  ${CMAKE_SOURCE_DIR}/vendor/glad/include
+  src 
+  vendor/glad/include
 )
 
 target_link_libraries(${TARGET} PRIVATE 
@@ -45,8 +45,8 @@ target_link_libraries(${TARGET} PRIVATE
 
 add_custom_target(build-shaders
   COMMAND mkdir -p ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders
-  COMMAND /usr/bin/glslc ${CMAKE_SOURCE_DIR}/assets/shaders/simple.vert -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders/simple.vert.spv
-  COMMAND /usr/bin/glslc ${CMAKE_SOURCE_DIR}/assets/shaders/simple.frag -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders/simple.frag.spv
+  COMMAND /usr/bin/glslc assets/shaders/simple.vert -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders/simple.vert.spv
+  COMMAND /usr/bin/glslc assets/shaders/simple.frag -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders/simple.frag.spv
 )
 
 add_subdirectory(tests)

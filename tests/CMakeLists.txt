@@ -13,10 +13,10 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -Wall -Wextra -Wno-gnu-zero-variadic-
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(src)
 link_libraries(m GL vulkan SDL2 cbased)
 
-file(GLOB_RECURSE TESTS_SRC_FILES ${CMAKE_SOURCE_DIR}/tests/*.c)
+file(GLOB_RECURSE TESTS_SRC_FILES tests/*.c)
 
 foreach(test_file ${TESTS_SRC_FILES})
   get_filename_component(test_name ${test_file} NAME_WE)
