@@ -3,25 +3,25 @@
 #include "core/base.h"
 #include "core/intrinsics.h"
 
-typedef struct IL_Node     IL_Node;
-typedef struct IL_List     IL_List;
-typedef struct IL_Iterator IL_Iterator;
+typedef struct DLL_Node     DLL_Node;
+typedef struct DLL_List     DLL_List;
+typedef struct DLL_Iterator DLL_Iterator;
 
-struct IL_Node {
-  IL_Node *prev, *next;
+struct DLL_Node {
+  DLL_Node *prev, *next;
 };
 
-struct IL_List {
-  IL_Node *head, *tail;
+struct DLL_List {
+  DLL_Node *head, *tail;
 };
 
-struct IL_Iterator {
-  IL_Node *curr;
-  u64      offset;
+struct DLL_Iterator {
+  DLL_Node *curr;
+  u64       offset;
 };
 
 INLINE void
-IL_push_front(IL_List *list, IL_Node *node)
+DLL_push_front(DLL_List *list, DLL_Node *node)
 {
   if (list->head != NULL) {
     list->head->prev = node;
@@ -37,7 +37,7 @@ IL_push_front(IL_List *list, IL_Node *node)
 }
 
 INLINE void
-IL_push_back(IL_List *list, IL_Node *node)
+DLL_push_back(DLL_List *list, DLL_Node *node)
 {
   if (list->tail != NULL) {
     list->tail->next = node;
@@ -53,7 +53,7 @@ IL_push_back(IL_List *list, IL_Node *node)
 }
 
 INLINE void
-IL_remove(IL_List *list, IL_Node *node)
+DLL_remove(DLL_List *list, DLL_Node *node)
 {
   if (node != NULL) {
     node->next->prev = node->prev;
@@ -70,15 +70,15 @@ IL_remove(IL_List *list, IL_Node *node)
 }
 
 INLINE b32
-IL_is_empty(IL_List *list)
+DLL_is_empty(DLL_List *list)
 {
   return list->head == NULL;
 }
 
-INLINE IL_Node *
-IL_pop_front(IL_List *list)
+INLINE DLL_Node *
+DLL_pop_front(DLL_List *list)
 {
-  IL_Node *link = list->head;
+  DLL_Node *link = list->head;
   if (link == NULL) {
     return NULL;
   }
@@ -97,10 +97,10 @@ IL_pop_front(IL_List *list)
   return link;
 }
 
-INLINE IL_Node *
-IL_pop_back(IL_List *list)
+INLINE DLL_Node *
+DLL_pop_back(DLL_List *list)
 {
-  IL_Node *link = list->tail;
+  DLL_Node *link = list->tail;
   if (link == NULL) {
     return NULL;
   }
@@ -120,9 +120,9 @@ IL_pop_back(IL_List *list)
 }
 
 INLINE void *
-IL_iterate_next(IL_Iterator *it)
+DLL_iterate_next(DLL_Iterator *it)
 {
-  IL_Node *node = it->curr;
+  DLL_Node *node = it->curr;
   if (node == NULL) {
     return NULL;
   }
@@ -131,9 +131,9 @@ IL_iterate_next(IL_Iterator *it)
 }
 
 INLINE void *
-IL_iterate_prev(IL_Iterator *it)
+DLL_iterate_prev(DLL_Iterator *it)
 {
-  IL_Node *node = it->curr;
+  DLL_Node *node = it->curr;
   if (node == NULL) {
     return NULL;
   }
@@ -141,10 +141,10 @@ IL_iterate_prev(IL_Iterator *it)
   return (void *)((u64)node - it->offset);
 }
 
-#define _IL_iterate_next(it, type) (type *)IL_iterate_next(it)
+#define _DLL_iterate_next(it, type) (type *)DLL_iterate_next(it)
 
-#define IL_iterator_head(list, typeid, field_name)                            \
-  (IL_Iterator) { list.head, offset_of_by_string(typeid, field_name) }
+#define DLL_iterator_head(list, typeid, field_name)                           \
+  (DLL_Iterator) { list.head, offset_of_by_string(typeid, field_name) }
 
-#define IL_iterator_tail(list, typeid, field_name)                            \
-  (IL_Iterator) { list.tail, offset_of_by_string(typeid, field_name) }
+#define DLL_iterator_tail(list, typeid, field_name)                           \
+  (DLL_Iterator) { list.tail, offset_of_by_string(typeid, field_name) }
