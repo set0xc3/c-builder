@@ -4,7 +4,14 @@
 
 #include <math.h>
 
-typedef union Vector2 {
+typedef union Vector2 Vector2;
+typedef union Vector3 Vector3;
+typedef union Vector4 Vector4;
+
+typedef Vector2 Point;
+typedef Vector4 Color;
+
+union Vector2 {
   struct {
     f32 x, y;
   };
@@ -22,9 +29,9 @@ typedef union Vector2 {
   };
 
   f32 elements[2];
-} Vector2;
+};
 
-typedef union Vector3 {
+union Vector3 {
   struct {
     f32 x, y, z;
   };
@@ -58,9 +65,9 @@ typedef union Vector3 {
   };
 
   f32 elements[3];
-} Vector3;
+};
 
-typedef union Vector4 {
+union Vector4 {
   struct {
     union {
       Vector3 xyz;
@@ -112,10 +119,7 @@ typedef union Vector4 {
   };
 
   f32 elements[4];
-} Vector4;
-
-typedef Vector2 Point;
-typedef Vector4 Color;
+};
 
 INLINE Vector2
 vec2_init(f32 x, f32 y)

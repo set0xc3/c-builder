@@ -5,14 +5,13 @@
 #include "quaternion.h"
 #include "vector.h"
 
-typedef struct Transform
-{
-    Vector3           position;
-    Vector4           rotation;
-    Vector3           scale;
-    Matrix4           local;
-    struct Transform *parent;
-    b32                is_dirty;
+typedef struct Transform {
+  Vector3           position;
+  Vector4           rotation;
+  Vector3           scale;
+  Matrix4           local;
+  struct Transform *parent;
+  b32               is_dirty;
 } Transform;
 
 API Transform transform_create(Vector3 position, Vector4 rotation,

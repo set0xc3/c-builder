@@ -141,6 +141,8 @@ IL_iterate_prev(IL_Iterator *it)
   return (void *)((u64)node - it->offset);
 }
 
+#define _IL_iterate_next(it, type) (type *)IL_iterate_next(it)
+
 #define IL_iterator_head(list, typeid, field_name)                            \
   (IL_Iterator) { list.head, offset_of_by_string(typeid, field_name) }
 
