@@ -43,6 +43,7 @@ target_link_libraries(${TARGET} PRIVATE
   m 
   GL 
   vulkan 
+  pq
   ${SDL2_LIBRARIES}
 )
 

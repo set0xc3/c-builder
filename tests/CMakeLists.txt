@@ -17,7 +17,7 @@ include_directories(
   src
   ../cbased/src
 )
-link_libraries(pq cbased)
+link_libraries(cbased)
 
 file(GLOB_RECURSE TESTS_SRC_FILES *.c)
 

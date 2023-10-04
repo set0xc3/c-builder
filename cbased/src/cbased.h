@@ -11,6 +11,7 @@
 #include "cbased/core/transform.h"
 #include "cbased/core/uuid.h"
 #include "cbased/core/vector.h"
+#include "cbased/database/postgresql.h"
 #include "cbased/gfx/gfx.h"
 #include "cbased/gfx/opengl.h"
 #include "cbased/gfx/vulkan.h"
