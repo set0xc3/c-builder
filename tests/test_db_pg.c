@@ -12,7 +12,8 @@ enum {
 int
 main(void)
 {
-  DB_pg_connect("host=172.17.0.2 port=5432 dbname=dev user=postgres "
+  // IP Docker postgresql (172.17.0.2)
+  DB_pg_connect("host=172.17.0.2 port=5432 dbname=test user=postgres "
                 "password=root connect_timeout=10");
 
   if (!DB_pg_connect_is_valid()) {

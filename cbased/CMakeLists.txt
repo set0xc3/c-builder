@@ -17,6 +17,13 @@ file(GLOB_RECURSE GLAD_SRC_FILES  vendor/glad/src/*.c)
 
 find_package(SDL2 REQUIRED)
 
+if (DEFINED ENV{PG_INCLUDE_DIR})
+    include_directories($ENV{PG_INCLUDE_DIR})
+else()
+    include_directories(/usr/include/postgresql)
+endif()
+
+
 add_library(${TARGET} ${SRC_FILES} ${GLAD_SRC_FILES})
 
 target_compile_options(${TARGET} PRIVATE 

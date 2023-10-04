@@ -21,6 +21,12 @@ link_libraries(cbased)
 
 file(GLOB_RECURSE TESTS_SRC_FILES *.c)
 
+if (DEFINED ENV{PG_INCLUDE_DIR})
+    include_directories($ENV{PG_INCLUDE_DIR})
+else()
+    include_directories(/usr/include/postgresql)
+endif()
+
 foreach(test_file ${TESTS_SRC_FILES})
   get_filename_component(test_name ${test_file} NAME_WE)
   add_executable(${test_name}.bin ${test_file})
