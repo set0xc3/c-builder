@@ -2,6 +2,7 @@
 
 #include "cbased/core/base.h"
 #include "cbased/core/vector.h"
+#include "cbased/gfx/opengl.h"
 #include "cbased/os/os.h"
 
 typedef struct DrawVertex DrawVertex;
