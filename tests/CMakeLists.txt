@@ -17,7 +17,7 @@ include_directories(
   src
   ../cbased/src
 )
-link_libraries(m GL vulkan SDL2 cbased)
+link_libraries(pq cbased)
 
 file(GLOB_RECURSE TESTS_SRC_FILES *.c)
 

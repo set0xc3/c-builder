@@ -15,6 +15,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 file(GLOB_RECURSE SRC_FILES       src/*.c)
 file(GLOB_RECURSE GLAD_SRC_FILES  vendor/glad/src/*.c)
 
+find_package(SDL2 REQUIRED)
+
 add_library(${TARGET} ${SRC_FILES} ${GLAD_SRC_FILES})
 
 target_compile_options(${TARGET} PRIVATE 
@@ -34,13 +36,14 @@ target_compile_options(${TARGET} PRIVATE
 target_include_directories(${TARGET} PRIVATE 
   src 
   vendor/glad/include
+  ${SDL2_INCLUDE_DIRS}
 )
 
 target_link_libraries(${TARGET} PRIVATE 
   m 
   GL 
   vulkan 
-  SDL2
+  ${SDL2_LIBRARIES}
 )
 
 add_custom_target(build-shaders
