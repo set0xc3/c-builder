@@ -27,9 +27,10 @@ log_print(u32 type, const char *time, const char *file_path, u32 line,
   buffer = realloc(buffer, buffer_size + 1);
   vsnprintf(buffer, buffer_size + 1, format, args);
 
-  const u32 padding = prefix_width - (u32)strlen(prefix);
   fprintf(stream, "[%s][%s][%s:%d]", time, prefix, file_path, line);
-  fprintf(stream, " %*s %s", padding, "-", buffer);
+  fprintf(stream, " %s %s", "-", buffer);
 
   va_end(args);
+
+  free(buffer);
 }

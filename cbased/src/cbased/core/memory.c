@@ -5,10 +5,12 @@
 MemoryArena *
 arena_create(u64 size)
 {
-  MemoryArena *arena = calloc(1, sizeof(MemoryArena));
-  arena->data        = calloc(1, size);
-  arena->size        = size;
-  arena->offset      = 0;
+  MemoryArena *arena = malloc(sizeof(MemoryArena));
+  memset(arena, 0, sizeof(MemoryArena));
+  arena->data = malloc(size);
+  memset(arena->data, 0, size);
+  arena->size   = size;
+  arena->offset = 0;
   return arena;
 }
 
