@@ -1,4 +1,4 @@
-#include "cbased/database/postgresql.h"
+#include "cbased/db/postgresql.h"
 
 static PGconn *pg_connect;
 

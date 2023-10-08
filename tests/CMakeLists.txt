@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(tests LANGUAGES C)
+project(cbased-tests LANGUAGES C)
 
 set(TARGET_ARCHITECTURE "x64")
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cbased/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cbased/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/cbased/bin)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -Wall -Wextra -Wno-gnu-zero-variadic-macro-arguments -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable -Wno-macro-redefined -Wno-attributes -Wno-incompatible-library-redeclaration")
@@ -42,8 +42,8 @@ foreach(BINARY ${BINARIES})
                      DEPENDS ${BINARY}
                      COMMENT "Running ${BINARY}"
                      VERBATIM)
-  add_custom_target(${BINARY_NAME} DEPENDS ${BINARY_NAME}.out)
+  add_custom_target(cbased-${BINARY_NAME} DEPENDS ${BINARY_NAME}.out)
   list(APPEND TEST_TARGETS ${BINARY_NAME})
 endforeach()
 
-add_custom_target(tests DEPENDS ${TEST_TARGETS})
+add_custom_target(cbased-tests DEPENDS ${TEST_TARGETS})
