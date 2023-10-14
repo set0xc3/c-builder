@@ -15,4 +15,5 @@
 #include "cbased/gfx/gfx.h"
 #include "cbased/gfx/opengl.h"
 #include "cbased/gfx/vulkan.h"
+#include "cbased/net/net.h"
 #include "cbased/os/os.h"
