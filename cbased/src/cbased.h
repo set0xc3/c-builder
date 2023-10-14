@@ -6,6 +6,7 @@
 #include "cbased/core/log.h"
 #include "cbased/core/math.h"
 #include "cbased/core/matrix.h"
+#include "cbased/core/memory.h"
 #include "cbased/core/quaternion.h"
 #include "cbased/core/string.h"
 #include "cbased/core/transform.h"

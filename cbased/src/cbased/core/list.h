@@ -144,7 +144,7 @@ DLL_iterate_prev(DLL_Iterator *it)
 #define _DLL_iterate_next(it, type) (type *)DLL_iterate_next(it)
 
 #define DLL_iterator_head(list, typeid, field_name)                           \
-  (DLL_Iterator) { list.head, offset_of_by_string(typeid, field_name) }
+  (DLL_Iterator) { list.head, OFFSET_OF_BY_STRING(typeid, field_name) }
 
 #define DLL_iterator_tail(list, typeid, field_name)                           \
-  (DLL_Iterator) { list.tail, offset_of_by_string(typeid, field_name) }
+  (DLL_Iterator) { list.tail, OFFSET_OF_BY_STRING(typeid, field_name) }

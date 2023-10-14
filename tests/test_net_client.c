@@ -29,7 +29,7 @@ main(void)
       LOG_INFO("[send] %s\n", send_data);
 
       char buf[BUFFER_SIZE] = { 0 };
-      i32  bytes_read       = recv(server->handle, buf, ArrayCount(buf), 0);
+      i32  bytes_read       = recv(server->handle, buf, ARRAY_COUNT(buf), 0);
 
       if (bytes_read > 0) {
         LOG_INFO("[recv] %.*s\n", bytes_read, buf);

@@ -116,7 +116,7 @@ check_validation_layer_support(void)
       = calloc(available_layer_count, sizeof(VkLayerProperties));
   vkEnumerateInstanceLayerProperties(&available_layer_count, available_layers);
 
-  for (u32 i = 0; i < ArrayCount(validation_layers); i++) {
+  for (u32 i = 0; i < ARRAY_COUNT(validation_layers); i++) {
     b32         layer_found = false;
     const char *layer_name  = validation_layers[i];
 
@@ -150,14 +150,14 @@ check_device_extension_support(VkPhysicalDevice device)
   for (u32 i = 0; i < extension_count; i++) {
     const char *extension_name = available_extensions[i].extensionName;
 
-    for (u32 j = 0; j < ArrayCount(device_extension_names); j++) {
+    for (u32 j = 0; j < ARRAY_COUNT(device_extension_names); j++) {
       if (strcmp(extension_name, device_extension_names[j]) == 0) {
         found_count++;
       }
     }
   }
 
-  if (found_count != ArrayCount(device_extension_names)) {
+  if (found_count != ARRAY_COUNT(device_extension_names)) {
     return false;
   }
 
@@ -351,7 +351,7 @@ vulkan_instance_create(void)
     create_info.pNext
         = (VkDebugUtilsMessengerCreateInfoEXT *)&debug_create_info;
     create_info.ppEnabledLayerNames = validation_layers;
-    create_info.enabledLayerCount   = ArrayCount(validation_layers);
+    create_info.enabledLayerCount   = ARRAY_COUNT(validation_layers);
     debug_messenger_information_create(&debug_create_info);
   }
 
@@ -410,7 +410,7 @@ vulkan_physical_device_create(void)
     indices.graphics_family_index,
     // indices.present_family_index, // TODO: is not unique
   };
-  u32 unique_queue_familie_count = ArrayCount(unique_queue_families);
+  u32 unique_queue_familie_count = ARRAY_COUNT(unique_queue_families);
 
   VkDeviceQueueCreateInfo *queue_create_infos
       = calloc(unique_queue_familie_count, sizeof(VkDeviceQueueCreateInfo));
@@ -437,14 +437,14 @@ vulkan_physical_device_create(void)
     .pQueueCreateInfos       = queue_create_infos,
     .enabledLayerCount       = 0,
     .ppEnabledLayerNames     = NULL,
-    .enabledExtensionCount   = ArrayCount(device_extension_names),
+    .enabledExtensionCount   = ARRAY_COUNT(device_extension_names),
     .ppEnabledExtensionNames = device_extension_names,
     .pEnabledFeatures        = &device_features,
   };
 
   if (enable_validation_layers) {
     device_create_info.ppEnabledLayerNames = validation_layers;
-    device_create_info.enabledLayerCount   = ArrayCount(validation_layers);
+    device_create_info.enabledLayerCount   = ARRAY_COUNT(validation_layers);
   } else {
     device_create_info.enabledLayerCount = 0;
   }

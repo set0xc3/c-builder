@@ -36,11 +36,11 @@ typedef i64 b64;
 #define GB(value) ((u64)(value) << 30)
 #define TB(value) ((u64)(value) << 40)
 
-#define ArrayCount(a) (sizeof((a)) / sizeof(*(a)))
+#define ARRAY_COUNT(a) (sizeof((a)) / sizeof(*(a)))
 
-#define Clamp(value, min, max)                                                \
+#define CLAMP(value, min, max)                                                \
   ((value <= min) ? min : (value >= max) ? max : value)
-#define ClampTop(value, max) ((value >= max) ? max : value)
+#define CLAMP_TOP(value, max) ((value >= max) ? max : value)
 
 // Platform Types
 
@@ -75,6 +75,6 @@ typedef i64 b64;
 #define NOINLINE
 #endif
 
-#define type_has_field(type, field)      offsetof(type, field)
-#define type_field_type(type, field)     typeof(((type *)0)->field)
-#define offset_of_by_string(type, field) ((size_t)(&((type *)0)->field))
+#define TYPE_HAS_FIELD(type, field)      offsetof(type, field)
+#define TYPE_FIELD_TYPE(type, field)     typeof(((type *)0)->field)
+#define OFFSET_OF_BY_STRING(type, field) ((size_t)(&((type *)0)->field))

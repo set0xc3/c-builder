@@ -28,7 +28,7 @@ main(void)
     NET_Socket *new_client = net_socket_accept(server, 1);
     if (new_client->is_valid) {
       char buf[1024]  = { 0 };
-      i32  bytes_read = recv(new_client->handle, buf, ArrayCount(buf), 0);
+      i32  bytes_read = recv(new_client->handle, buf, ARRAY_COUNT(buf), 0);
 
       if (bytes_read > 0) {
         LOG_INFO("[recv] %.*s\n", bytes_read, buf);
