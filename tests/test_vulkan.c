@@ -17,8 +17,6 @@ test_get_extensions(void)
 int
 main(void)
 {
-  LOG_INFO("[TEST] [VULKAN]\n");
-
   os_init(false);
 
   if (!test_get_extensions()) {

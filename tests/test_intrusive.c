@@ -21,8 +21,6 @@ struct EntityList {
 int
 main(void)
 {
-  LOG_INFO("[TEST] [Intrusive]\n");
-
   EntityList entity_list = { 0 };
 
   for (size_t i = 0; i < 4; i++) {
