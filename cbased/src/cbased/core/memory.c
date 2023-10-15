@@ -2,28 +2,26 @@
 #include "cbased/core/base.h"
 #include "cbased/core/log.h"
 
-MemoryArena *
-arena_alloc(u64 cap)
+MemoryArena
+memory_arena_alloc(u64 cap)
 {
-  MemoryArena *result = malloc(sizeof(MemoryArena));
-  memset(result, 0, sizeof(MemoryArena));
-
-  result->memory     = result + sizeof(MemoryArena);
-  result->max        = cap;
-  result->pos        = sizeof(MemoryArena);
-  result->commit_pos = MEMORY_COMMIT_SIZE;
-  result->align      = 8;
+  MemoryArena result = { 0 };
+  result.memory      = malloc(cap);
+  result.max         = cap;
+  result.pos         = sizeof(MemoryArena);
+  result.commit_pos  = MEMORY_COMMIT_SIZE;
+  result.align       = 8;
   return result;
 }
 
-MemoryArena *
-arena_alloc_default(void)
+MemoryArena
+memory_arena_alloc_default(void)
 {
-  return arena_alloc(MEMORY_COMMIT_SIZE);
+  return memory_arena_alloc(MEMORY_COMMIT_SIZE);
 }
 
 void
-arena_release(MemoryArena *arena)
+memory_arena_release(MemoryArena *arena)
 {
   assert(!arena);
 
@@ -31,7 +29,7 @@ arena_release(MemoryArena *arena)
 }
 
 void *
-arena_push(MemoryArena *arena, u64 size)
+memory_arena_push(MemoryArena *arena, u64 size)
 {
   if (arena->pos + size > arena->max) {
     LOG_FATAL("Handle out-of-memory");
@@ -43,9 +41,9 @@ arena_push(MemoryArena *arena, u64 size)
 }
 
 void *
-arena_push_zero(MemoryArena *arena, u64 size)
+memory_arena_push_zero(MemoryArena *arena, u64 size)
 {
-  void *memory = arena_push(arena, size);
+  void *memory = memory_arena_push(arena, size);
   if (memory == 0) {
     return 0;
   }
@@ -55,7 +53,7 @@ arena_push_zero(MemoryArena *arena, u64 size)
 }
 
 void *
-arena_pop(MemoryArena *arena, u64 size)
+memory_arena_pop(MemoryArena *arena, u64 size)
 {
   if (arena->pos == 0) {
     LOG_FATAL("Handle out-of-memory");
@@ -67,13 +65,13 @@ arena_pop(MemoryArena *arena, u64 size)
 }
 
 void
-arena_clear(MemoryArena *arena)
+memory_arena_clear(MemoryArena *arena)
 {
   arena->pos = 0;
 }
 
 u64
-arena_get_offset(MemoryArena *arena)
+memory_arena_get_offset(MemoryArena *arena)
 {
   return arena->pos;
 }
@@ -81,7 +79,7 @@ arena_get_offset(MemoryArena *arena)
 // ArenaTemp
 
 MemoryArenaTemp
-arena_temp_begin(MemoryArena *arena)
+memory_arena_temp_begin(MemoryArena *arena)
 {
   MemoryArenaTemp result = { 0 };
   result.arena           = arena;
@@ -90,13 +88,13 @@ arena_temp_begin(MemoryArena *arena)
 }
 
 void
-arena_temp_end(MemoryArenaTemp temp)
+memory_arena_temp_end(MemoryArenaTemp temp)
 {
   temp.arena->pos = temp.offset;
 }
 
 MemoryArenaTemp
-arena_get_scratch(MemoryArena *arena)
+memory_arena_get_scratch(MemoryArena *arena)
 {
   MemoryArenaTemp temp = { 0 };
   temp.arena           = arena;
