@@ -60,7 +60,7 @@ gfx_draw_line(DrawList *draw_list, const Vector2 p1, const Vector2 p2,
 
   DrawCmd cmd = {
     .vtx_offset = draw_list->vtx_buffer_count,
-    .vtx_count  = ArrayCount(vertices),
+    .vtx_count  = ARRAY_COUNT(vertices),
   };
 
   u8 *vtx_buffer = (u8 *)draw_list->vtx_buffers;
