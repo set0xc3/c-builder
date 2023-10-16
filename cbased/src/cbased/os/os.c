@@ -19,7 +19,7 @@ os_init(b32 console)
   }
 
   if (!ctx->is_console) {
-    ctx->root_window = os_window_open("Window", 0, 0, 1280, 720);
+    ctx->root_window = os_window_open("Window", 0, 0, 1080, 720);
   }
 
   return true;
@@ -93,18 +93,18 @@ string
 os_file_read(const string path)
 {
   string result = { 0 };
-  FILE  *file   = fopen(path.data, "r");
+  FILE  *file   = fopen(path.str, "r");
 
   if (file != 0) {
     fseek(file, 0, SEEK_END);
     result.size = ftell(file);
-    result.data = malloc(result.size + 1);
+    result.str  = malloc(result.size + 1);
     fseek(file, 0, SEEK_SET);
 
-    fread(result.data, 1, result.size, file);
+    fread(result.str, 1, result.size, file);
     fclose(file);
 
-    result.data[result.size - 1] = '\0';
+    result.str[result.size - 1] = '\0';
   }
   return result;
 }
@@ -125,12 +125,12 @@ os_library_load(const char *path)
 
   u64    size     = strlen(path) + strlen(ext) + dot_size;
   string path_ext = { alloca(size), size };
-  strncpy((char *)path_ext.data, path, path_ext.size);
+  strncpy((char *)path_ext.str, path, path_ext.size);
 
-  strncat((char *)path_ext.data, dot, path_ext.size);
-  strncat((char *)path_ext.data, ext, path_ext.size);
+  strncat((char *)path_ext.str, dot, path_ext.size);
+  strncat((char *)path_ext.str, ext, path_ext.size);
 
-  result.handle = SDL_LoadObject((const char *)path_ext.data);
+  result.handle = SDL_LoadObject((const char *)path_ext.str);
   if (result.handle == NULL) {
     LOG_ERR("[SDL] %s\n", SDL_GetError());
   }
@@ -165,9 +165,6 @@ os_window_open(const char *title, i32 xpos, i32 ypos, i32 width, i32 height)
   out_window->rect.y      = ypos;
   out_window->rect.width  = width;
   out_window->rect.height = height;
-
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
   u32 window_flags
       = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;

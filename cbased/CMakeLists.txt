@@ -49,13 +49,13 @@ target_include_directories(${TARGET} PRIVATE
 target_link_libraries(${TARGET} PRIVATE 
   m 
   GL 
-  vulkan 
+  # vulkan 
   pq
   ${SDL2_LIBRARIES}
 )
 
-add_custom_target(build-shaders
-  COMMAND mkdir -p ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders
-  COMMAND /usr/bin/glslc assets/shaders/simple.vert -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders/simple.vert.spv
-  COMMAND /usr/bin/glslc assets/shaders/simple.frag -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders/simple.frag.spv
-)
+# add_custom_target(build-shaders
+#   COMMAND mkdir -p ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders
+#   COMMAND /usr/bin/glslc assets/shaders/default.vert -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders/default.vert.spv
+#   COMMAND /usr/bin/glslc assets/shaders/default.frag -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders/default.frag.spv
+# )

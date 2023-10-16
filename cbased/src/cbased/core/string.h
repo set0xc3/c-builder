@@ -6,7 +6,7 @@
 typedef struct string string;
 
 struct string {
-  char *data;
+  char *str;
   u64   size;
 };
 
@@ -14,7 +14,7 @@ INLINE string
 str_lit(const char *c)
 {
   string result;
-  result.data = (char *)c;
+  result.str  = (char *)c;
   result.size = strlen(c);
   return result;
 }
@@ -22,6 +22,6 @@ str_lit(const char *c)
 INLINE b32
 str_eq(const string left, const string right)
 {
-  b32 result = !strcmp(left.data, right.data);
+  b32 result = !strcmp(left.str, right.str);
   return result;
 }

@@ -35,7 +35,7 @@ main(void)
   LOG_INFO("arena.align: %ld\n", arena.align);
 
   LOG_INFO("node.uuid: %s\n", node->uuid.value);
-  LOG_INFO("node.name: %s\n", node->name.data);
+  LOG_INFO("node.name: %s\n", node->name.str);
 
   return 0;
 }

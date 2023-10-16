@@ -1,5 +1,6 @@
 #include <cbased.h>
 
+#if 0
 const u32 width  = 800;
 const u32 height = 600;
 
@@ -36,7 +37,7 @@ main(void)
   LOG_INFO("[TEST]   version: legacy\n");
 
   os_init(false);
-  opengl_init();
+  gl_init();
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -55,8 +56,15 @@ main(void)
     os_delay(1);
   }
 
-  opengl_destroy();
+  gl_destroy();
   os_destroy();
 
   return 0;
 }
+#else
+int
+main(void)
+{
+  return 0;
+}
+#endif

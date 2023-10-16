@@ -1,4 +1,4 @@
-#include "vulkan.h"
+#include "cbased/gfx/backend/vk.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_vulkan.h>
@@ -484,7 +484,7 @@ vulkan_pipeline_shader_create(const string    file_source,
     .pNext    = NULL,
     .flags    = 0,
     .codeSize = file_source.size,
-    .pCode    = (const u32 *)file_source.data,
+    .pCode    = (const u32 *)file_source.str,
   };
 
   if (vkCreateShaderModule(ctx->device, &create_info, NULL, shader_module)
