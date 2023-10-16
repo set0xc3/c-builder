@@ -34,10 +34,10 @@ u32_to_rgb(u32 rgbu, u32 *out_r, u32 *out_g, u32 *out_b)
   *out_b = (rgbu)&0x0FF;
 }
 
-INLINE Vector3
+INLINE vec3
 rgb_u32_to_vec3(u32 r, u32 g, u32 b)
 {
-  Vector3 out_v;
+  vec3 out_v;
   out_v.r = r / 255.0f;
   out_v.g = g / 255.0f;
   out_v.b = b / 255.0f;
@@ -45,7 +45,7 @@ rgb_u32_to_vec3(u32 r, u32 g, u32 b)
 }
 
 INLINE void
-vec3_to_rgb_u32(Vector3 v, u32 *out_r, u32 *out_g, u32 *out_b)
+vec3_to_rgb_u32(vec3 v, u32 *out_r, u32 *out_g, u32 *out_b)
 {
   *out_r = v.r * 255;
   *out_g = v.g * 255;

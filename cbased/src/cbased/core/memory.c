@@ -7,10 +7,11 @@ memory_arena_alloc(u64 cap)
 {
   MemoryArena result = { 0 };
   result.memory      = malloc(cap);
-  result.max         = cap;
-  result.pos         = sizeof(MemoryArena);
-  result.commit_pos  = MEMORY_COMMIT_SIZE;
-  result.align       = 8;
+  memset(result.memory, 0, cap);
+  result.max        = cap;
+  result.pos        = sizeof(MemoryArena);
+  result.commit_pos = MEMORY_COMMIT_SIZE;
+  result.align      = 8;
   return result;
 }
 
@@ -67,7 +68,7 @@ memory_arena_pop(MemoryArena *arena, u64 size)
 void
 memory_arena_clear(MemoryArena *arena)
 {
-  arena->pos = 0;
+  arena->pos = sizeof(MemoryArena);
 }
 
 u64

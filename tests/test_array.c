@@ -3,7 +3,7 @@
 typedef struct Entity Entity;
 
 struct Entity {
-  Uuid uuid;
+  uuid uuid;
 };
 
 int

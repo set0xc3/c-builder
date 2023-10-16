@@ -3,24 +3,24 @@
 
 #include "cbased/core/base.h"
 
-typedef struct String String;
+typedef struct string string;
 
-struct String {
+struct string {
   char *data;
   u64   size;
 };
 
-INLINE String
+INLINE string
 str_lit(const char *c)
 {
-  String result;
+  string result;
   result.data = (char *)c;
   result.size = strlen(c);
   return result;
 }
 
 INLINE b32
-str_eq(const String left, const String right)
+str_eq(const string left, const string right)
 {
   b32 result = !strcmp(left.data, right.data);
   return result;

@@ -2,9 +2,9 @@
 
 #include "cbased/core/base.h"
 
-typedef struct Uuid Uuid;
+typedef struct uuid uuid;
 
-struct Uuid {
+struct uuid {
   char value[36];
 };
 
@@ -12,7 +12,7 @@ struct Uuid {
 extern "C" {
 #endif
 
-API Uuid uuid_gen(void);
+API uuid uuid_gen(void);
 
 #ifdef __cplusplus
 }

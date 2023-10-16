@@ -22,7 +22,7 @@ flush(void)
 }
 
 static void
-push_quad(Vector2 dst, Vector2 src, Color color)
+push_quad(vec2 dst, vec2 src, Color color)
 {
   if (object_count == BUFFER_SIZE) {
     flush();

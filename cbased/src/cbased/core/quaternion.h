@@ -4,10 +4,12 @@
 #include "cbased/core/math.h"
 #include "cbased/core/matrix.h"
 
-INLINE Vector4
+typedef vec4 quat;
+
+INLINE vec4
 quat_identity(void)
 {
-  Vector4 out_quat = { 0 };
+  vec4 out_quat = { 0 };
 
   out_quat.w = 1.0f;
 
@@ -15,16 +17,16 @@ quat_identity(void)
 }
 
 INLINE f32
-quat_normal(Vector4 q)
+quat_normal(vec4 q)
 {
   return sqrtf(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
 }
 
-INLINE Vector4
-quat_normalize(Vector4 q)
+INLINE vec4
+quat_normalize(vec4 q)
 {
-  Vector4 out_quat;
-  f32     normal = quat_normal(q);
+  vec4 out_quat;
+  f32  normal = quat_normal(q);
 
   out_quat.x = q.x / normal;
   out_quat.y = q.y / normal;
@@ -34,10 +36,10 @@ quat_normalize(Vector4 q)
   return out_quat;
 }
 
-INLINE Vector4
-quat_conjugate(Vector4 q)
+INLINE vec4
+quat_conjugate(vec4 q)
 {
-  Vector4 out_quat;
+  vec4 out_quat;
 
   out_quat.x = -q.x;
   out_quat.y = -q.y;
@@ -47,16 +49,16 @@ quat_conjugate(Vector4 q)
   return out_quat;
 }
 
-INLINE Vector4
-quat_inverse(Vector4 q)
+INLINE vec4
+quat_inverse(vec4 q)
 {
   return quat_normalize(quat_conjugate(q));
 }
 
-INLINE Vector4
-quat_mul(Vector4 a, Vector4 b)
+INLINE vec4
+quat_mul(vec4 a, vec4 b)
 {
-  Vector4 out_quat;
+  vec4 out_quat;
 
   out_quat.x = a.x * b.w + a.y * b.z - a.z * b.y + a.w * b.x;
   out_quat.y = -a.x * b.z + a.y * b.w + a.z * b.x + a.w * b.y;
@@ -67,17 +69,17 @@ quat_mul(Vector4 a, Vector4 b)
 }
 
 INLINE f32
-quat_dot(Vector4 a, Vector4 b)
+quat_dot(vec4 a, vec4 b)
 {
   return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 }
 
 // https://stackoverflow.com/questions/1556260/convert-quaternion-rotation-to-rotation-matrix
-INLINE Matrix4
-quat_to_mat4(Vector4 q)
+INLINE mat4
+quat_to_mat4(vec4 q)
 {
-  Matrix4 out_matrix = mat4_identity();
-  Vector4 n          = quat_normalize(q);
+  mat4 out_matrix = mat4_identity();
+  vec4 n          = quat_normalize(q);
 
   out_matrix.data[0] = 1.0f - 2.0f * n.y * n.y - 2.0f * n.z * n.z;
   out_matrix.data[1] = 2.0f * n.x * n.y - 2.0f * n.z * n.w;
@@ -94,10 +96,10 @@ quat_to_mat4(Vector4 q)
   return out_matrix;
 }
 
-INLINE Matrix4
-quat_to_rotation_matrix(Vector4 q, Vector3 center)
+INLINE mat4
+quat_to_rotation_matrix(vec4 q, vec3 center)
 {
-  Matrix4 out_matrix;
+  mat4 out_matrix;
 
   f32 *o = out_matrix.data;
   o[0]   = (q.x * q.x) - (q.y * q.y) - (q.z * q.z) + (q.w * q.w);
@@ -123,14 +125,14 @@ quat_to_rotation_matrix(Vector4 q, Vector3 center)
   return out_matrix;
 }
 
-INLINE Vector4
-quat_from_axis_angle(Vector3 axis, f32 angle, b32 normalize)
+INLINE vec4
+quat_from_axis_angle(vec3 axis, f32 angle, b32 normalize)
 {
   const f32 half_angle = 0.5f * angle;
   f32       s          = sinf(half_angle);
   f32       c          = cosf(half_angle);
 
-  Vector4 q;
+  vec4 q;
   q.x = s * axis.x;
   q.y = s * axis.y;
   q.z = s * axis.z;
@@ -143,16 +145,16 @@ quat_from_axis_angle(Vector3 axis, f32 angle, b32 normalize)
   return q;
 }
 
-INLINE Vector4
-quat_slerp(Vector4 a, Vector4 b, f32 percentage)
+INLINE vec4
+quat_slerp(vec4 a, vec4 b, f32 percentage)
 {
-  Vector4 out_quaternion;
+  vec4 out_quaternion;
 
   // Source: https://en.wikipedia.org/wiki/Slerp
   // Only unit quaternions are valid rotations.
   // Normalize to avoid undefined behavior.
-  Vector4 v0 = quat_normalize(a);
-  Vector4 v1 = quat_normalize(b);
+  vec4 v0 = quat_normalize(a);
+  vec4 v1 = quat_normalize(b);
 
   // Compute the cosine of the angle between the two vectors.
   f32 dot = quat_dot(v0, v1);

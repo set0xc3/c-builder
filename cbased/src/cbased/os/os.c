@@ -89,10 +89,10 @@ os_perf_frequency(void)
   return SDL_GetPerformanceFrequency();
 }
 
-String
-os_file_read(const String path)
+string
+os_file_read(const string path)
 {
-  String result = { 0 };
+  string result = { 0 };
   FILE  *file   = fopen(path.data, "r");
 
   if (file != 0) {
@@ -124,7 +124,7 @@ os_library_load(const char *path)
   u64   dot_size = strlen(dot);
 
   u64    size     = strlen(path) + strlen(ext) + dot_size;
-  String path_ext = { alloca(size), size };
+  string path_ext = { alloca(size), size };
   strncpy((char *)path_ext.data, path, path_ext.size);
 
   strncat((char *)path_ext.data, dot, path_ext.size);

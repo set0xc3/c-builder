@@ -9,13 +9,13 @@
 #include <SDL2/SDL_opengl.h>
 
 typedef struct OS_Library {
-  Uuid  uuid;
+  uuid  uuid;
   b32   is_valid;
   void *handle;
 } OS_Library;
 
 typedef struct OS_Window {
-  Uuid        uuid;
+  uuid        uuid;
   const char *title;
 
   struct {
@@ -45,7 +45,7 @@ API b32    os_poll_event(void);
 API void   os_delay(u32 ms);
 API u64    os_perf_counter(void);
 API u64    os_perf_frequency(void);
-API String os_file_read(const String path);
+API string os_file_read(const string path);
 
 API OS_Library os_library_load(const char *path);
 API void       os_library_unload(OS_Library *library);

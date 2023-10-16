@@ -6,16 +6,16 @@
 
 #include <math.h>
 
-typedef struct Matrix4 Matrix4;
+typedef struct mat4 mat4;
 
-struct Matrix4 {
+struct mat4 {
   f32 data[16];
 };
 
-INLINE Matrix4
+INLINE mat4
 mat4_identity(void)
 {
-  Matrix4 out_matrix = { 0 };
+  mat4 out_matrix = { 0 };
 
   out_matrix.data[0]  = 1.0f;
   out_matrix.data[5]  = 1.0f;
@@ -25,10 +25,10 @@ mat4_identity(void)
   return out_matrix;
 }
 
-INLINE Matrix4
-mat4_mul(Matrix4 a, Matrix4 b)
+INLINE mat4
+mat4_mul(mat4 a, mat4 b)
 {
-  Matrix4 out_matrix = mat4_identity();
+  mat4 out_matrix = mat4_identity();
 
   const f32 *m1_ptr  = a.data;
   const f32 *m2_ptr  = b.data;
@@ -46,11 +46,11 @@ mat4_mul(Matrix4 a, Matrix4 b)
   return out_matrix;
 }
 
-INLINE Matrix4
+INLINE mat4
 mat4_orthographic(f32 left, f32 right, f32 bottom, f32 top, f32 near_clip,
                   f32 far_clip)
 {
-  Matrix4 out_matrix = mat4_identity();
+  mat4 out_matrix = mat4_identity();
 
   f32 lr = 1.0f / (left - right);
   f32 bt = 1.0f / (bottom - top);
@@ -67,12 +67,12 @@ mat4_orthographic(f32 left, f32 right, f32 bottom, f32 top, f32 near_clip,
   return out_matrix;
 }
 
-INLINE Matrix4
+INLINE mat4
 mat4_perspective(f32 fov_radians, f32 aspect_ratio, f32 near_clip,
                  f32 far_clip)
 {
   f32     half_tan_fov = tanf(fov_radians * 0.5f);
-  Matrix4 out_matrix   = { 0 };
+  mat4 out_matrix   = { 0 };
 
   out_matrix.data[0]  = 1.0f / (aspect_ratio * half_tan_fov);
   out_matrix.data[5]  = 1.0f / half_tan_fov;
@@ -84,18 +84,18 @@ mat4_perspective(f32 fov_radians, f32 aspect_ratio, f32 near_clip,
   return out_matrix;
 }
 
-INLINE Matrix4
-mat4_look_at(Vector3 position, Vector3 target, Vector3 up)
+INLINE mat4
+mat4_look_at(vec3 position, vec3 target, vec3 up)
 {
-  Matrix4 out_matrix;
-  Vector3 z_axis;
+  mat4 out_matrix;
+  vec3 z_axis;
   z_axis.x = target.x - position.x;
   z_axis.y = target.y - position.y;
   z_axis.z = target.z - position.z;
 
   z_axis         = vec3_normalized(z_axis);
-  Vector3 x_axis = vec3_normalized(vec3_cross(z_axis, up));
-  Vector3 y_axis = vec3_cross(x_axis, z_axis);
+  vec3 x_axis = vec3_normalized(vec3_cross(z_axis, up));
+  vec3 y_axis = vec3_cross(x_axis, z_axis);
 
   out_matrix.data[0]  = x_axis.x;
   out_matrix.data[1]  = y_axis.x;
@@ -117,10 +117,10 @@ mat4_look_at(Vector3 position, Vector3 target, Vector3 up)
   return out_matrix;
 }
 
-INLINE Matrix4
-mat4_transposed(Matrix4 matrix)
+INLINE mat4
+mat4_transposed(mat4 matrix)
 {
-  Matrix4 out_matrix = mat4_identity();
+  mat4 out_matrix = mat4_identity();
 
   out_matrix.data[0]  = matrix.data[0];
   out_matrix.data[1]  = matrix.data[4];
@@ -142,8 +142,8 @@ mat4_transposed(Matrix4 matrix)
   return out_matrix;
 }
 
-INLINE Matrix4
-mat4_inverse(Matrix4 matrix)
+INLINE mat4
+mat4_inverse(mat4 matrix)
 {
   const f32 *m = matrix.data;
 
@@ -172,7 +172,7 @@ mat4_inverse(Matrix4 matrix)
   f32 t22 = m[0] * m[5];
   f32 t23 = m[4] * m[1];
 
-  Matrix4 out_matrix;
+  mat4 out_matrix;
   f32    *o = out_matrix.data;
 
   o[0] = (t0 * m[5] + t3 * m[9] + t4 * m[13])
@@ -230,10 +230,10 @@ mat4_inverse(Matrix4 matrix)
   return out_matrix;
 }
 
-INLINE Matrix4
-mat4_translation(Vector3 position)
+INLINE mat4
+mat4_translation(vec3 position)
 {
-  Matrix4 out_matrix = mat4_identity();
+  mat4 out_matrix = mat4_identity();
 
   out_matrix.data[12] = position.x;
   out_matrix.data[13] = position.y;
@@ -242,10 +242,10 @@ mat4_translation(Vector3 position)
   return out_matrix;
 }
 
-INLINE Matrix4
-mat4_scale(Vector3 scale)
+INLINE mat4
+mat4_scale(vec3 scale)
 {
-  Matrix4 out_matrix = mat4_identity();
+  mat4 out_matrix = mat4_identity();
 
   out_matrix.data[0]  = scale.x;
   out_matrix.data[5]  = scale.y;
@@ -254,10 +254,10 @@ mat4_scale(Vector3 scale)
   return out_matrix;
 }
 
-INLINE Matrix4
+INLINE mat4
 mat4_euler_x(f32 angle_radians)
 {
-  Matrix4 out_matrix = mat4_identity();
+  mat4 out_matrix = mat4_identity();
   f32     c          = cosf(angle_radians);
   f32     s          = sinf(angle_radians);
 
@@ -269,10 +269,10 @@ mat4_euler_x(f32 angle_radians)
   return out_matrix;
 }
 
-INLINE Matrix4
+INLINE mat4
 mat4_euler_y(f32 angle_radians)
 {
-  Matrix4 out_matrix = mat4_identity();
+  mat4 out_matrix = mat4_identity();
   f32     c          = cosf(angle_radians);
   f32     s          = sinf(angle_radians);
 
@@ -284,10 +284,10 @@ mat4_euler_y(f32 angle_radians)
   return out_matrix;
 }
 
-INLINE Matrix4
+INLINE mat4
 mat4_euler_z(f32 angle_radians)
 {
-  Matrix4 out_matrix = mat4_identity();
+  mat4 out_matrix = mat4_identity();
 
   f32 c = cosf(angle_radians);
   f32 s = sinf(angle_radians);
@@ -300,21 +300,21 @@ mat4_euler_z(f32 angle_radians)
   return out_matrix;
 }
 
-INLINE Matrix4
+INLINE mat4
 mat4_euler_xyz(f32 x_radians, f32 y_radians, f32 z_radians)
 {
-  Matrix4 rx         = mat4_euler_x(x_radians);
-  Matrix4 ry         = mat4_euler_y(y_radians);
-  Matrix4 rz         = mat4_euler_z(z_radians);
-  Matrix4 out_matrix = mat4_mul(mat4_mul(rx, ry), rz);
+  mat4 rx         = mat4_euler_x(x_radians);
+  mat4 ry         = mat4_euler_y(y_radians);
+  mat4 rz         = mat4_euler_z(z_radians);
+  mat4 out_matrix = mat4_mul(mat4_mul(rx, ry), rz);
 
   return out_matrix;
 }
 
-INLINE Vector3
-mat4_forward(Matrix4 matrix)
+INLINE vec3
+mat4_forward(mat4 matrix)
 {
-  Vector3 forward;
+  vec3 forward;
 
   forward.x = -matrix.data[2];
   forward.y = -matrix.data[6];
@@ -325,10 +325,10 @@ mat4_forward(Matrix4 matrix)
   return forward;
 }
 
-INLINE Vector3
-mat4_backward(Matrix4 matrix)
+INLINE vec3
+mat4_backward(mat4 matrix)
 {
-  Vector3 backward;
+  vec3 backward;
 
   backward.x = matrix.data[2];
   backward.y = matrix.data[6];
@@ -339,10 +339,10 @@ mat4_backward(Matrix4 matrix)
   return backward;
 }
 
-INLINE Vector3
-mat4_up(Matrix4 matrix)
+INLINE vec3
+mat4_up(mat4 matrix)
 {
-  Vector3 up;
+  vec3 up;
 
   up.x = matrix.data[1];
   up.y = matrix.data[5];
@@ -353,10 +353,10 @@ mat4_up(Matrix4 matrix)
   return up;
 }
 
-INLINE Vector3
-mat4_down(Matrix4 matrix)
+INLINE vec3
+mat4_down(mat4 matrix)
 {
-  Vector3 down;
+  vec3 down;
 
   down.x = -matrix.data[1];
   down.y = -matrix.data[5];
@@ -367,10 +367,10 @@ mat4_down(Matrix4 matrix)
   return down;
 }
 
-INLINE Vector3
-mat4_left(Matrix4 matrix)
+INLINE vec3
+mat4_left(mat4 matrix)
 {
-  Vector3 left;
+  vec3 left;
 
   left.x = -matrix.data[0];
   left.y = -matrix.data[4];
@@ -381,10 +381,10 @@ mat4_left(Matrix4 matrix)
   return left;
 }
 
-INLINE Vector3
-mat4_right(Matrix4 matrix)
+INLINE vec3
+mat4_right(mat4 matrix)
 {
-  Vector3 right;
+  vec3 right;
 
   right.x = matrix.data[0];
   right.y = matrix.data[4];
@@ -395,10 +395,10 @@ mat4_right(Matrix4 matrix)
   return right;
 }
 
-INLINE Vector3
-mat4_mul_vec3(Matrix4 m, Vector3 v)
+INLINE vec3
+mat4_mul_vec3(mat4 m, vec3 v)
 {
-  Vector3 out_vector;
+  vec3 out_vector;
 
   out_vector.x
       = v.x * m.data[0] + v.y * m.data[1] + v.z * m.data[2] + m.data[3];
@@ -410,10 +410,10 @@ mat4_mul_vec3(Matrix4 m, Vector3 v)
   return out_vector;
 }
 
-INLINE Vector3
-vec3_mul_mat4(Vector3 v, Matrix4 m)
+INLINE vec3
+vec3_mul_mat4(vec3 v, mat4 m)
 {
-  Vector3 out_vector;
+  vec3 out_vector;
 
   out_vector.x
       = v.x * m.data[0] + v.y * m.data[4] + v.z * m.data[8] + m.data[12];
@@ -425,10 +425,10 @@ vec3_mul_mat4(Vector3 v, Matrix4 m)
   return out_vector;
 }
 
-INLINE Vector4
-mat4_mul_vec4(Matrix4 m, Vector4 v)
+INLINE vec4
+mat4_mul_vec4(mat4 m, vec4 v)
 {
-  Vector4 out_vector;
+  vec4 out_vector;
 
   out_vector.x
       = v.x * m.data[0] + v.y * m.data[1] + v.z * m.data[2] + v.w * m.data[3];
@@ -442,10 +442,10 @@ mat4_mul_vec4(Matrix4 m, Vector4 v)
   return out_vector;
 }
 
-INLINE Vector4
-vec4_mul_mat4(Vector4 v, Matrix4 m)
+INLINE vec4
+vec4_mul_mat4(vec4 v, mat4 m)
 {
-  Vector4 out_vector;
+  vec4 out_vector;
 
   out_vector.x
       = v.x * m.data[0] + v.y * m.data[4] + v.z * m.data[8] + v.w * m.data[12];

@@ -3,8 +3,8 @@
 typedef struct Node Node;
 
 struct Node {
-  Uuid   uuid;
-  String name;
+  uuid   uuid;
+  string name;
 };
 
 int
@@ -21,6 +21,12 @@ main(void)
   Node *node = MEMORY_PUSH_ARRAY_ZERO(&arena, Node, 1);
   node->uuid = uuid_gen();
   node->name = str_lit("Node");
+
+  memory_arena_clear(&arena);
+
+  Node *_node = MEMORY_PUSH_ARRAY_ZERO(&arena, Node, 1);
+  _node->uuid = uuid_gen();
+  _node->name = str_lit("Node2");
 
   LOG_INFO("arena.memory: %ld\n", arena.memory);
   LOG_INFO("arena.max: %ld\n", arena.max);

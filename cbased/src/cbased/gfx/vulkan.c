@@ -456,10 +456,10 @@ vulkan_physical_device_create(void)
 }
 
 void
-vulkan_pipeline_create(const String vert_filepath, const String frag_filepath)
+vulkan_pipeline_create(const string vert_filepath, const string frag_filepath)
 {
-  String vert_source = os_file_read(vert_filepath);
-  String frag_source = os_file_read(frag_filepath);
+  string vert_source = os_file_read(vert_filepath);
+  string frag_source = os_file_read(frag_filepath);
 
   VkShaderModule vert_shader_module = NULL;
   if (!vulkan_pipeline_shader_create(vert_source, &vert_shader_module)) {
@@ -476,7 +476,7 @@ vulkan_pipeline_create(const String vert_filepath, const String frag_filepath)
 }
 
 b32
-vulkan_pipeline_shader_create(const String    file_source,
+vulkan_pipeline_shader_create(const string    file_source,
                               VkShaderModule *shader_module)
 {
   VkShaderModuleCreateInfo create_info = {

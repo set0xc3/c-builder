@@ -1,7 +1,7 @@
 #include "transform.h"
 
 Transform
-transform_create(Vector3 position, Vector4 rotation, Vector3 scale)
+transform_create(vec3 position, vec4 rotation, vec3 scale)
 {
     Transform transform;
 
@@ -15,7 +15,7 @@ transform_create(Vector3 position, Vector4 rotation, Vector3 scale)
 }
 
 Transform
-transform_from_position(Vector3 position)
+transform_from_position(vec3 position)
 {
     Transform transform;
 
@@ -30,7 +30,7 @@ transform_from_position(Vector3 position)
 }
 
 Transform
-transform_from_rotation(Vector4 rotation)
+transform_from_rotation(vec4 rotation)
 {
     Transform transform;
 
@@ -45,7 +45,7 @@ transform_from_rotation(Vector4 rotation)
 }
 
 Transform
-transform_from_scale(Vector3 scale)
+transform_from_scale(vec3 scale)
 {
     Transform transform;
 
@@ -60,34 +60,34 @@ transform_from_scale(Vector3 scale)
 }
 
 void
-transform_translate(Transform *transform, Vector3 translation)
+transform_translate(Transform *transform, vec3 translation)
 {
     transform->position = vec3_add(transform->position, translation);
     transform->is_dirty = true;
 }
 
 void
-transform_rotate(Transform *transform, Vector4 rotation)
+transform_rotate(Transform *transform, vec4 rotation)
 {
     transform->rotation = quat_mul(transform->rotation, rotation);
     transform->is_dirty = true;
 }
 
 void
-transform_scale(Transform *transform, Vector3 scale)
+transform_scale(Transform *transform, vec3 scale)
 {
     transform->scale    = vec3_mul(transform->scale, scale);
     transform->is_dirty = true;
 }
 
-Matrix4
+mat4
 transform_local_get(Transform *transform)
 {
     if (transform)
     {
         if (transform->is_dirty)
         {
-            Matrix4 tr         = mat4_mul(quat_to_mat4(transform->rotation),
+            mat4 tr         = mat4_mul(quat_to_mat4(transform->rotation),
                                            mat4_translation(transform->position));
             tr                  = mat4_mul(mat4_scale(transform->scale), tr);
             transform->local    = tr;
@@ -99,15 +99,15 @@ transform_local_get(Transform *transform)
     return mat4_identity();
 }
 
-Matrix4
+mat4
 transform_world_get(Transform *transform)
 {
     if (transform)
     {
-        Matrix4 local = transform_local_get(transform);
+        mat4 local = transform_local_get(transform);
         if (transform->parent)
         {
-            Matrix4 parent = transform_world_get(transform->parent);
+            mat4 parent = transform_world_get(transform->parent);
             return mat4_mul(local, parent);
         }
         return local;
@@ -115,40 +115,40 @@ transform_world_get(Transform *transform)
     return mat4_identity();
 }
 
-Vector3
+vec3
 transform_position_get(const Transform *transform)
 {
     return transform->position;
 }
 
 void
-transform_position_set(Transform *transform, Vector3 position)
+transform_position_set(Transform *transform, vec3 position)
 {
     transform->position = position;
     transform->is_dirty = true;
 }
 
-Vector4
+vec4
 transform_rotation_get(const Transform *transform)
 {
     return transform->rotation;
 }
 
 void
-transform_rotation_set(Transform *transform, Vector4 rotation)
+transform_rotation_set(Transform *transform, vec4 rotation)
 {
     transform->rotation = rotation;
     transform->is_dirty = true;
 }
 
-Vector3
+vec3
 transform_scale_get(const Transform *transform)
 {
     return transform->scale;
 }
 
 void
-transform_scale_set(Transform *transform, Vector3 scale)
+transform_scale_set(Transform *transform, vec3 scale)
 {
     transform->scale    = scale;
     transform->is_dirty = true;

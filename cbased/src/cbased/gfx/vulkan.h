@@ -98,9 +98,9 @@ API b32 vulkan_surface_create(void);
 API void vulkan_physical_device_pick(void);
 API void vulkan_physical_device_create(void);
 
-API void vulkan_pipeline_create(const String vert_filepath,
-                                const String frag_filepath);
-API b32  vulkan_pipeline_shader_create(const String    file_source,
+API void vulkan_pipeline_create(const string vert_filepath,
+                                const string frag_filepath);
+API b32  vulkan_pipeline_shader_create(const string    file_source,
                                        VkShaderModule *shader_module);
 
 API VkPipeline vulkan_pipeline_builder(PipelineBuilder *self, VkDevice device,
