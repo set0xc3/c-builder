@@ -13,7 +13,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 file(GLOB_RECURSE SRC_FILES       src/*.c)
-file(GLOB_RECURSE GLAD_SRC_FILES  vendor/glad/src/*.c)
 
 find_package(SDL2 REQUIRED)
 
@@ -24,7 +23,7 @@ else()
 endif()
 
 
-add_library(${TARGET} ${SRC_FILES} ${GLAD_SRC_FILES})
+add_library(${TARGET} ${SRC_FILES})
 
 target_compile_options(${TARGET} PRIVATE 
   -g 
@@ -42,15 +41,15 @@ target_compile_options(${TARGET} PRIVATE
 
 target_include_directories(${TARGET} PRIVATE 
   src 
-  vendor/glad/include
+  ${CMAKE_SOURCE_DIR}/vendor/glad/include
   ${SDL2_INCLUDE_DIRS}
 )
 
 target_link_libraries(${TARGET} PRIVATE 
   m 
   GL 
-  # vulkan 
   pq
+  glad
   ${SDL2_LIBRARIES}
 )
 

@@ -5,7 +5,7 @@ typedef struct EntityNode EntityNode;
 typedef struct EntityList EntityList;
 
 struct Entity {
-  uuid uuid;
+  uuid id;
 };
 
 struct EntityNode {
@@ -24,8 +24,8 @@ main(void)
   EntityList entity_list = { 0 };
 
   for (size_t i = 0; i < 4; i++) {
-    EntityNode *node  = malloc(sizeof(EntityNode));
-    node->entity.uuid = uuid_gen();
+    EntityNode *node = malloc(sizeof(EntityNode));
+    node->entity.id  = uuid_gen();
     DLL_push_back(&entity_list.list, &node->node);
     entity_list.count++;
   }
@@ -39,7 +39,7 @@ main(void)
   for (EntityNode *node = DLL_iterate_next(&it); node != NULL;
        node             = DLL_iterate_next(&it)) {
     Entity *entity = &node->entity;
-    LOG_INFO("entity.uuid: %s\n", entity->uuid.value);
+    LOG_INFO("entity.uuid: %s\n", entity->id.value);
   }
 
   return 0;

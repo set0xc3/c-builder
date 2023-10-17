@@ -40,8 +40,10 @@ API void gfx_init(void);
 API void gfx_destroy(void);
 API void gfx_frame_begin(void);
 API void gfx_frame_end(void);
-API void gfx_triangle_push(vec2 a, vec2 b, vec2 c, vec4 a_color, vec4 b_color,
-                           vec4 c_color);
+API void gfx_viewport_set(rect viewport);
+API void gfx_bg_color_set(color bg);
+API void gfx_triangle_push(vec2 a, vec2 b, vec2 c, color a_color,
+                           color b_color, color c_color);
 API void gfx_quad_push(rect quad, color tint);
 
 #ifdef __cplusplus

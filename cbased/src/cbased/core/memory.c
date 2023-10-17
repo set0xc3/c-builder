@@ -5,8 +5,8 @@
 MemoryArena
 memory_arena_alloc(u64 cap)
 {
-  MemoryArena result = { 0 };
-  result.memory      = malloc(cap);
+  MemoryArena result;
+  result.memory = malloc(cap);
   memset(result.memory, 0, cap);
   result.max        = cap;
   result.pos        = sizeof(MemoryArena);
@@ -25,7 +25,6 @@ void
 memory_arena_release(MemoryArena *arena)
 {
   assert(!arena);
-
   free(arena);
 }
 
@@ -35,7 +34,6 @@ memory_arena_push(MemoryArena *arena, u64 size)
   if (arena->pos + size > arena->max) {
     LOG_FATAL("Handle out-of-memory");
   }
-
   u8 *pos = (u8 *)arena->memory + arena->pos;
   arena->pos += size;
   return pos;
@@ -48,7 +46,6 @@ memory_arena_push_zero(MemoryArena *arena, u64 size)
   if (memory == 0) {
     return 0;
   }
-
   memset(memory, 0, size);
   return memory;
 }
@@ -59,7 +56,6 @@ memory_arena_pop(MemoryArena *arena, u64 size)
   if (arena->pos == 0) {
     LOG_FATAL("Handle out-of-memory");
   }
-
   arena->pos -= size;
   u8 *pos = (u8 *)arena->pos - size;
   return pos;

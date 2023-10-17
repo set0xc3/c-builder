@@ -26,7 +26,7 @@ net_socket_create(u32 type)
   NET_Socket *result = (NET_Socket *)malloc(sizeof(NET_Socket));
   memset(result, 0, sizeof(NET_Socket));
 
-  result->uuid = uuid_gen();
+  result->id = uuid_gen();
 
   i32 socket_handle = socket(AF_INET, SOCK_STREAM, 0);
   if (socket_handle < 0) {
@@ -116,7 +116,7 @@ net_socket_accept(NET_Socket *socket_accept, u32 listeners)
   NET_Socket *result = malloc(sizeof(NET_Socket));
   memset(result, 0, sizeof(NET_Socket));
 
-  result->uuid = uuid_gen();
+  result->id = uuid_gen();
 
   if (listen(socket_accept->handle, listeners) < 0) {
     LOG_ERR("Listen failed\n");

@@ -363,12 +363,10 @@ vec3_dot(vec3 left, vec3 right)
 INLINE vec3
 vec3_cross(vec3 a, vec3 b)
 {
-  vec3 v = { 0 };
-
+  vec3 v;
   v.x = a.y * b.z - a.z * b.y;
   v.y = a.z * b.x - a.x * b.z;
   v.z = a.x * b.y - a.y * b.x;
-
   return v;
 }
 

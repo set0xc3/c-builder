@@ -21,7 +21,7 @@
 typedef struct NET_Socket NET_Socket;
 
 struct NET_Socket {
-  uuid        uuid;
+  uuid        id;
   i32         handle;
   b32         is_valid;
   b32         is_connect;

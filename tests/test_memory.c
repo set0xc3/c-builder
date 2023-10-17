@@ -3,7 +3,7 @@
 typedef struct Node Node;
 
 struct Node {
-  uuid   uuid;
+  uuid   id;
   string name;
 };
 
@@ -19,13 +19,13 @@ main(void)
   LOG_INFO("arena.align: %ld\n", arena.align);
 
   Node *node = MEMORY_PUSH_ARRAY_ZERO(&arena, Node, 1);
-  node->uuid = uuid_gen();
+  node->id   = uuid_gen();
   node->name = str_lit("Node");
 
   memory_arena_clear(&arena);
 
   Node *_node = MEMORY_PUSH_ARRAY_ZERO(&arena, Node, 1);
-  _node->uuid = uuid_gen();
+  _node->id   = uuid_gen();
   _node->name = str_lit("Node2");
 
   LOG_INFO("arena.memory: %ld\n", arena.memory);
@@ -34,7 +34,7 @@ main(void)
   LOG_INFO("arena.commit_pos: %ld\n", arena.commit_pos);
   LOG_INFO("arena.align: %ld\n", arena.align);
 
-  LOG_INFO("node.uuid: %s\n", node->uuid.value);
+  LOG_INFO("node.uuid: %s\n", node->id.value);
   LOG_INFO("node.name: %s\n", node->name.str);
 
   return 0;

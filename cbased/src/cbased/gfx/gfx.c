@@ -139,8 +139,20 @@ gfx_frame_end(void)
 }
 
 void
-gfx_triangle_push(vec2 a, vec2 b, vec2 c, vec4 a_color, vec4 b_color,
-                  vec4 c_color)
+gfx_viewport_set(rect viewport)
+{
+  glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
+}
+
+void
+gfx_bg_color_set(color bg)
+{
+  glClearColor(bg.r, bg.g, bg.b, bg.a);
+}
+
+void
+gfx_triangle_push(vec2 a, vec2 b, vec2 c, color a_color, color b_color,
+                  color c_color)
 {
   if (gfx->triangle_count == GFX_TRIANGLE_MAX) {
     gfx_frame_end();

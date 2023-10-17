@@ -8,13 +8,13 @@
 #include <SDL2/SDL.h>
 
 typedef struct OS_Library {
-  uuid  uuid;
+  uuid  id;
   b32   is_valid;
   void *handle;
 } OS_Library;
 
 typedef struct OS_Window {
-  uuid        uuid;
+  uuid        id;
   const char *title;
 
   struct {

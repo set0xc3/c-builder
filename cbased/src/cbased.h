@@ -1,6 +1,5 @@
 #pragma once
 
-#include "cbased/core/array.h"
 #include "cbased/core/base.h"
 #include "cbased/core/list.h"
 #include "cbased/core/log.h"
