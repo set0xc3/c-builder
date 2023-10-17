@@ -8,10 +8,6 @@ typedef union vec2 vec2;
 typedef union vec3 vec3;
 typedef union vec4 vec4;
 
-typedef vec2 point;
-typedef vec4 rect;
-typedef vec4 color;
-
 union vec2 {
   struct {
     f32 x, y;
@@ -19,10 +15,6 @@ union vec2 {
 
   struct {
     f32 u, v;
-  };
-
-  struct {
-    f32 left, right;
   };
 
   struct {
@@ -93,19 +85,19 @@ union vec4 {
 
   struct {
     vec2 xy;
-    f32  _ignored0;
     f32  _ignored1;
-  };
-
-  struct {
     f32  _ignored2;
-    vec2 yz;
-    f32  _ignored3;
   };
 
   struct {
+    f32  _ignored3;
+    vec2 yz;
     f32  _ignored4;
+  };
+
+  struct {
     f32  _ignored5;
+    f32  _ignored6;
     vec2 zw;
   };
 
@@ -114,10 +106,10 @@ union vec4 {
   };
 
   struct {
-    f32 _ignored6;
-    f32 _ignored7;
-    f32 _ignored8;
-    f32 h;
+    f32  _ignored7;
+    f32  _ignored8;
+    f32 width;
+    f32 height;
   };
 
   f32 elements[4];

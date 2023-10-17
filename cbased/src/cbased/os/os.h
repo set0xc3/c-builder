@@ -4,6 +4,7 @@
 #include "cbased/core/log.h"
 #include "cbased/core/string.h"
 #include "cbased/core/uuid.h"
+#include "cbased/core/vector.h"
 
 #include <SDL2/SDL.h>
 
@@ -14,18 +15,15 @@ typedef struct OS_Library {
 } OS_Library;
 
 typedef struct OS_Window {
-  uuid        id;
-  const char *title;
+  uuid   id;
+  string title;
 
   struct {
     SDL_Window   *window;
     SDL_GLContext gl_ctx;
   } sdl;
 
-  struct {
-    i32 x, y;
-    i32 width, height;
-  } rect;
+  vec4 rect;
 } OS_Window;
 
 typedef struct OS_Context {
@@ -40,7 +38,8 @@ extern "C" {
 API b32 os_init(b32 console);
 API b32 os_destroy(void);
 
-API b32    os_poll_event(void);
+API b32    os_event_next(SDL_Event *out_event);
+API b32    os_process_event(SDL_Event *event);
 API void   os_delay(u32 ms);
 API u64    os_perf_counter(void);
 API u64    os_perf_frequency(void);
@@ -50,8 +49,7 @@ API OS_Library os_library_load(const char *path);
 API void       os_library_unload(OS_Library *library);
 API void      *os_library_load_function(OS_Library *library, const char *name);
 
-API OS_Window *os_window_open(const char *title, i32 xpos, i32 ypos, i32 width,
-                              i32 height);
+API OS_Window *os_window_open(string title, vec4 rect);
 API b32        os_window_close(OS_Window *window);
 API void       os_window_swap_buffer(OS_Window *window);
 

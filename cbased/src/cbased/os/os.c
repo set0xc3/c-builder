@@ -19,7 +19,8 @@ os_init(b32 console)
   }
 
   if (!ctx->is_console) {
-    ctx->root_window = os_window_open("Window", 0, 0, 1080, 720);
+    ctx->root_window
+        = os_window_open(str_lit("Window"), vec4_init(0, 0, 1280, 720));
   }
 
   return true;
@@ -38,34 +39,36 @@ os_destroy(void)
 }
 
 b32
-os_poll_event(void)
+os_event_next(SDL_Event *out_event)
 {
-  SDL_Event raw_event = { 0 };
+  return SDL_PollEvent(out_event);
+}
 
-  while (SDL_PollEvent(&raw_event)) {
-    switch (raw_event.type) {
-    case SDL_QUIT:
-      return false;
+b32
+os_process_event(SDL_Event *event)
+{
+  switch (event->type) {
+  case SDL_QUIT:
+    return false;
 
-    case SDL_WINDOWEVENT: {
-      if (raw_event.window.event == SDL_WINDOWEVENT_RESIZED) {
-      }
-    } break;
-
-    case SDL_MOUSEMOTION:
-      break;
-
-    case SDL_MOUSEWHEEL:
-      break;
-
-    case SDL_MOUSEBUTTONDOWN:
-    case SDL_MOUSEBUTTONUP: {
-    } break;
-
-    case SDL_KEYDOWN:
-    case SDL_KEYUP: {
-    } break;
+  case SDL_WINDOWEVENT: {
+    if (event->window.event == SDL_WINDOWEVENT_RESIZED) {
     }
+  } break;
+
+  case SDL_MOUSEMOTION:
+    break;
+
+  case SDL_MOUSEWHEEL:
+    break;
+
+  case SDL_MOUSEBUTTONDOWN:
+  case SDL_MOUSEBUTTONUP: {
+  } break;
+
+  case SDL_KEYDOWN:
+  case SDL_KEYUP: {
+  } break;
   }
 
   return true;
@@ -154,23 +157,20 @@ os_library_load_function(OS_Library *library, const char *name)
 }
 
 OS_Window *
-os_window_open(const char *title, i32 xpos, i32 ypos, i32 width, i32 height)
+os_window_open(string title, vec4 rect)
 {
   OS_Window *out_window;
   out_window = malloc(sizeof(OS_Window));
   memset(out_window, 0, sizeof(OS_Window));
 
-  out_window->title       = title;
-  out_window->rect.x      = xpos;
-  out_window->rect.y      = ypos;
-  out_window->rect.width  = width;
-  out_window->rect.height = height;
+  out_window->title = title;
+  out_window->rect  = rect;
 
-  u32 window_flags
-      = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
+  u32 window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+                     | SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
 
   out_window->sdl.window = SDL_CreateWindow(
-      out_window->title, out_window->rect.x, out_window->rect.y,
+      out_window->title.str, out_window->rect.x, out_window->rect.y,
       out_window->rect.width, out_window->rect.height, window_flags);
 
   if (!out_window->sdl.window) {

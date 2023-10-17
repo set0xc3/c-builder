@@ -139,20 +139,20 @@ gfx_frame_end(void)
 }
 
 void
-gfx_viewport_set(rect viewport)
+gfx_viewport_set(vec4 viewport)
 {
-  glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
+  glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
 }
 
 void
-gfx_bg_color_set(color bg)
+gfx_bg_color_set(vec4 bg)
 {
   glClearColor(bg.r, bg.g, bg.b, bg.a);
 }
 
 void
-gfx_triangle_push(vec2 a, vec2 b, vec2 c, color a_color, color b_color,
-                  color c_color)
+gfx_triangle_push(vec2 a, vec2 b, vec2 c, vec4 a_color, vec4 b_color,
+                  vec4 c_color)
 {
   if (gfx->triangle_count == GFX_TRIANGLE_MAX) {
     gfx_frame_end();
@@ -170,12 +170,12 @@ gfx_triangle_push(vec2 a, vec2 b, vec2 c, color a_color, color b_color,
 }
 
 void
-gfx_quad_push(rect quad, color tint)
+gfx_quad_push(vec4 quad, vec4 tint)
 {
   gfx_triangle_push(
-      vec2_init(quad.x, quad.y), vec2_init(quad.x + quad.w, quad.y),
-      vec2_init(quad.x + quad.w, quad.y + quad.h), tint, tint, tint);
+      vec2_init(quad.x, quad.y), vec2_init(quad.x + quad.width, quad.y),
+      vec2_init(quad.x + quad.width, quad.y + quad.height), tint, tint, tint);
   gfx_triangle_push(vec2_init(quad.x, quad.y),
-                    vec2_init(quad.x + quad.w, quad.y + quad.h),
-                    vec2_init(quad.x, quad.y + quad.h), tint, tint, tint);
+                    vec2_init(quad.x + quad.width, quad.y + quad.height),
+                    vec2_init(quad.x, quad.y + quad.height), tint, tint, tint);
 }

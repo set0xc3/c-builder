@@ -17,7 +17,8 @@ main(void)
   os_init(false);
   gfx_init();
 
-  while (os_poll_event()) {
+  SDL_Event event;
+  while (os_event_next(&event)) {
     gfx_frame_begin();
     gfx_quad_push(vec4_init(0, 0, 100, 100), vec4_init(1, 0, 1, 1));
     gfx_frame_end();

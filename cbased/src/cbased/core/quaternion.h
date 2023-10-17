@@ -4,8 +4,6 @@
 #include "cbased/core/math.h"
 #include "cbased/core/matrix.h"
 
-typedef vec4 quat;
-
 INLINE vec4
 quat_identity(void)
 {
