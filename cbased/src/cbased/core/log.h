@@ -15,7 +15,7 @@ typedef enum LoggerType {
 extern "C" {
 #endif
 
-API void log_print(u32 type, const char *time, const char *file_path, u32 line,
+api void log_print(u32 type, const char *time, const char *file_path, u32 line,
                    const char *format, ...);
 
 #ifdef __cplusplus

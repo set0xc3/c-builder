@@ -12,7 +12,7 @@ struct uuid {
 extern "C" {
 #endif
 
-API uuid uuid_gen(void);
+api uuid uuid_gen(void);
 
 #ifdef __cplusplus
 }

@@ -31,6 +31,10 @@ typedef i16 b16;
 typedef i32 b32;
 typedef i64 b64;
 
+#define global        static
+#define function      static
+#define local_persist static
+
 #define KB(value) (value << 10)
 #define MB(value) (value << 20)
 #define GB(value) ((u64)(value) << 30)
@@ -44,37 +48,78 @@ typedef i64 b64;
 
 // Platform Types
 
-#ifdef __linux__
-#define LINUX
-#elif defined(__WIN32__)
-#define WINDOWS
+#if __cplusplus
+#define LANG_CPP
 #endif
 
-#ifdef EXPORT
-#ifdef _MSC_VER
-#define API __attribute__((dllexport))
+#ifdef __linux__
+#define OS_LINUX
 #else
-#define API __attribute__((visibility("default")))
-#endif // _MSC_VER
-#else  // Import
-#ifdef _MSC_VER
-#define API __attribute__((dllimport))
+#ifdef __WIN32__
+#define OS_WINDOWS
+#endif
+#endif
+
+#ifdef LANG_CPP
+#ifdef OS_WINDOWS
+#define exported extern "C" __declspec(dllexport)
 #else
-#define API
-#endif // _MSC_VER
-#endif // EXPORT
+#define exported extern "C"
+#endif
+#else
+#ifdef OS_WINDOWS
+#define exported __declspec(dllexport)
+#else
+#define exported
+#endif
+#endif
+
+#if LANG_CPP
+#if OS_WINDOWS
+#define imported extern "C" __declspec(dllimport)
+#else
+#define imported extern "C"
+#endif
+#else
+#if OS_WINDOWS
+#define imported __declspec(dllimport)
+#else
+#define imported
+#endif
+#endif
+
+#ifdef LANG_CPP
+#define api extern "C"
+#else
+#define api
+#endif
+
+#ifdef LANG_CPP
+#ifdef OS_WINDOWS
+#ifdef exported
+#define api extern "C" __declspec(dllexport)
+#else
+#define api extern "C" __declspec(dllimport)
+#endif
+#else
+#define api extern "C"
+#endif
+#else
+#ifdef OS_WINDOWS
+#define api __declspec(dllexport)
+#else
+#define api
+#endif
+#endif
 
 #if defined(__clang__) || defined(__gcc__)
-#define INLINE   __attribute__((always_inline)) inline
-#define NOINLINE __attribute__((noinline))
-#elif defined(_MSC_VER)
-#define INLINE   __forceinline
-#define NOINLINE __declspec(noinline)
+#define inline   __attribute__((always_inline)) inline
+#define noinline __attribute__((noinline))
 #else
-#define INLINE static inline
-#define NOINLINE
+#define inline static inline
+#define noinline
 #endif
 
-#define TYPE_HAS_FIELD(type, field)      offsetof(type, field)
-#define TYPE_FIELD_TYPE(type, field)     typeof(((type *)0)->field)
-#define OFFSET_OF_BY_STRING(type, field) ((size_t)(&((type *)0)->field))
+#define type_has_field(type, field)      offsetof(type, field)
+#define type_field_type(type, field)     typeof(((type *)0)->field)
+#define offset_of_by_string(type, field) ((size_t)(&((type *)0)->field))

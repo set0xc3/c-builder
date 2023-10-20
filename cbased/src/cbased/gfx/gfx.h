@@ -36,15 +36,13 @@ struct GFX_Context {
 extern "C" {
 #endif
 
-API void gfx_init(void);
-API void gfx_destroy(void);
-API void gfx_frame_begin(void);
-API void gfx_frame_end(void);
-API void gfx_viewport_set(vec4 viewport);
-API void gfx_bg_color_set(vec4 bg);
-API void gfx_triangle_push(vec2 a, vec2 b, vec2 c, vec4 a_color, vec4 b_color,
+api void gfx_init(void);
+api void gfx_destroy(void);
+api void gfx_frame_begin(void);
+api void gfx_frame_end(void);
+api void gfx_triangle_push(vec2 a, vec2 b, vec2 c, vec4 a_color, vec4 b_color,
                            vec4 c_color);
-API void gfx_quad_push(vec4 quad, vec4 tint);
+api void gfx_quad_push(vec4 quad, vec4 tint);
 
 #ifdef __cplusplus
 }

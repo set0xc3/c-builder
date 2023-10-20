@@ -1,8 +1,8 @@
 #include "cbased/db/postgresql.h"
 
-static PGconn *pg_connect;
+global PGconn *pg_connect;
 
-b32
+api b32
 DB_pg_connect(const char *connect_info)
 {
   pg_connect = PQconnectdb(connect_info);
@@ -15,7 +15,7 @@ DB_pg_connect(const char *connect_info)
   return true;
 }
 
-b32
+api b32
 DB_pg_connect_is_valid(void)
 {
   if (PQstatus(pg_connect) != CONNECTION_OK) {
@@ -27,13 +27,13 @@ DB_pg_connect_is_valid(void)
   return true;
 }
 
-void
+api void
 DB_pg_finish(void)
 {
   PQfinish(pg_connect);
 }
 
-PGresult *
+api PGresult *
 DB_pg_exec(const char *query)
 {
   PGresult *result = PQexec(pg_connect, query);

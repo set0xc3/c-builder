@@ -1,6 +1,6 @@
 #include "transform.h"
 
-Transform
+api Transform
 transform_create(vec3 position, vec4 rotation, vec3 scale)
 {
   Transform transform;
@@ -12,7 +12,7 @@ transform_create(vec3 position, vec4 rotation, vec3 scale)
   return transform;
 }
 
-Transform
+api Transform
 transform_from_position(vec3 position)
 {
   Transform transform;
@@ -25,7 +25,7 @@ transform_from_position(vec3 position)
   return transform;
 }
 
-Transform
+api Transform
 transform_from_rotation(vec4 rotation)
 {
   Transform transform;
@@ -38,7 +38,7 @@ transform_from_rotation(vec4 rotation)
   return transform;
 }
 
-Transform
+api Transform
 transform_from_scale(vec3 scale)
 {
   Transform transform;
@@ -51,28 +51,28 @@ transform_from_scale(vec3 scale)
   return transform;
 }
 
-void
+api void
 transform_translate(Transform *transform, vec3 translation)
 {
   transform->position = vec3_add(transform->position, translation);
   transform->is_dirty = true;
 }
 
-void
+api void
 transform_rotate(Transform *transform, vec4 rotation)
 {
   transform->rotation = quat_mul(transform->rotation, rotation);
   transform->is_dirty = true;
 }
 
-void
+api void
 transform_scale(Transform *transform, vec3 scale)
 {
   transform->scale    = vec3_mul(transform->scale, scale);
   transform->is_dirty = true;
 }
 
-mat4
+api mat4
 transform_local_get(Transform *transform)
 {
   if (transform) {
@@ -88,7 +88,7 @@ transform_local_get(Transform *transform)
   return mat4_identity();
 }
 
-mat4
+api mat4
 transform_world_get(Transform *transform)
 {
   if (transform) {
@@ -102,52 +102,52 @@ transform_world_get(Transform *transform)
   return mat4_identity();
 }
 
-vec3
+api vec3
 transform_position_get(const Transform *transform)
 {
   return transform->position;
 }
 
-void
+api void
 transform_position_set(Transform *transform, vec3 position)
 {
   transform->position = position;
   transform->is_dirty = true;
 }
 
-vec4
+api vec4
 transform_rotation_get(const Transform *transform)
 {
   return transform->rotation;
 }
 
-void
+api void
 transform_rotation_set(Transform *transform, vec4 rotation)
 {
   transform->rotation = rotation;
   transform->is_dirty = true;
 }
 
-vec3
+api vec3
 transform_scale_get(const Transform *transform)
 {
   return transform->scale;
 }
 
-void
+api void
 transform_scale_set(Transform *transform, vec3 scale)
 {
   transform->scale    = scale;
   transform->is_dirty = true;
 }
 
-Transform *
+api Transform *
 transform_parent_get(Transform *transform)
 {
   return transform->parent;
 }
 
-void
+api void
 transform_parent_set(Transform *transform, Transform *parent)
 {
   transform->parent   = parent;

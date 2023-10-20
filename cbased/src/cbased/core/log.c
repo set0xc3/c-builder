@@ -1,10 +1,10 @@
 #include "log.h"
 
-const char *logger_types_string[LoggerType_Count] = {
+global const char *logger_types_string[LoggerType_Count] = {
   "INFO", "DEBUG", "WARN", "ERR", "FATAL",
 };
 
-void
+api void
 log_print(u32 type, const char *time, const char *file_path, u32 line,
           const char *format, ...)
 {

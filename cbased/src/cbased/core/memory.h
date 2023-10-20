@@ -19,14 +19,14 @@ struct MemoryArena {
 extern "C" {
 #endif
 
-API MemoryArena memory_arena_alloc(u64 cap);
-API MemoryArena memory_arena_alloc_default(void);
-API void        memory_arena_release(MemoryArena *arena);
-API void       *memory_arena_push(MemoryArena *arena, u64 size);
-API void       *memory_arena_push_zero(MemoryArena *arena, u64 size);
-API void       *memory_arena_pop(MemoryArena *arena, u64 size);
-API void        memory_arena_clear(MemoryArena *arena);
-API u64         memory_arena_get_offset(MemoryArena *arena);
+api MemoryArena memory_arena_alloc(u64 cap);
+api MemoryArena memory_arena_alloc_default(void);
+api void        memory_arena_release(MemoryArena *arena);
+api void       *memory_arena_push(MemoryArena *arena, u64 size);
+api void       *memory_arena_push_zero(MemoryArena *arena, u64 size);
+api void       *memory_arena_pop(MemoryArena *arena, u64 size);
+api void        memory_arena_clear(MemoryArena *arena);
+api u64         memory_arena_get_offset(MemoryArena *arena);
 
 #ifdef __cplusplus
 }
@@ -50,8 +50,8 @@ struct MemoryArenaTemp {
 extern "C" {
 #endif
 
-API MemoryArenaTemp memory_arena_temp_begin(MemoryArena *arena);
-API void            memory_arena_temp_end(MemoryArenaTemp temp);
+api MemoryArenaTemp memory_arena_temp_begin(MemoryArena *arena);
+api void            memory_arena_temp_end(MemoryArenaTemp temp);
 
 #ifdef __cplusplus
 }

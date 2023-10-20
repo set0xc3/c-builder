@@ -2,7 +2,7 @@
 #include "cbased/core/base.h"
 #include "cbased/core/log.h"
 
-MemoryArena
+api MemoryArena
 memory_arena_alloc(u64 cap)
 {
   MemoryArena result;
@@ -15,20 +15,20 @@ memory_arena_alloc(u64 cap)
   return result;
 }
 
-MemoryArena
+api MemoryArena
 memory_arena_alloc_default(void)
 {
   return memory_arena_alloc(MEMORY_COMMIT_SIZE);
 }
 
-void
+api void
 memory_arena_release(MemoryArena *arena)
 {
   assert(!arena);
   free(arena);
 }
 
-void *
+api void *
 memory_arena_push(MemoryArena *arena, u64 size)
 {
   if (arena->pos + size > arena->max) {
@@ -39,7 +39,7 @@ memory_arena_push(MemoryArena *arena, u64 size)
   return pos;
 }
 
-void *
+api void *
 memory_arena_push_zero(MemoryArena *arena, u64 size)
 {
   void *memory = memory_arena_push(arena, size);
@@ -50,7 +50,7 @@ memory_arena_push_zero(MemoryArena *arena, u64 size)
   return memory;
 }
 
-void *
+api void *
 memory_arena_pop(MemoryArena *arena, u64 size)
 {
   if (arena->pos == 0) {
@@ -61,13 +61,13 @@ memory_arena_pop(MemoryArena *arena, u64 size)
   return pos;
 }
 
-void
+api void
 memory_arena_clear(MemoryArena *arena)
 {
   arena->pos = sizeof(MemoryArena);
 }
 
-u64
+api u64
 memory_arena_get_offset(MemoryArena *arena)
 {
   return arena->pos;
@@ -75,7 +75,7 @@ memory_arena_get_offset(MemoryArena *arena)
 
 // ArenaTemp
 
-MemoryArenaTemp
+api MemoryArenaTemp
 memory_arena_temp_begin(MemoryArena *arena)
 {
   MemoryArenaTemp result = { 0 };
@@ -84,13 +84,13 @@ memory_arena_temp_begin(MemoryArena *arena)
   return result;
 }
 
-void
+api void
 memory_arena_temp_end(MemoryArenaTemp temp)
 {
   temp.arena->pos = temp.offset;
 }
 
-MemoryArenaTemp
+api MemoryArenaTemp
 memory_arena_get_scratch(MemoryArena *arena)
 {
   MemoryArenaTemp temp = { 0 };

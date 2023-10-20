@@ -3,7 +3,7 @@
 int
 main(void)
 {
-  char cwd[256];
+  local_persist char cwd[256];
 
   if (chdir("../../") == 0) {
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
@@ -17,13 +17,16 @@ main(void)
   os_init(false);
   gfx_init();
 
-  b32 is_quit = false;
+  local_persist vec4 viewport;
+  local_persist b32  is_quit = false;
   while (!is_quit) {
+
     SDL_Event event;
     while (os_event_next(&event)) {
       if (!os_process_event(&event)) {
         is_quit = true;
       }
+      viewport = os_window_root_get()->rect;
     }
 
     gfx_frame_begin();

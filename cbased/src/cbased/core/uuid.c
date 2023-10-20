@@ -1,6 +1,6 @@
 #include "uuid.h"
 
-uuid
+api uuid
 uuid_gen(void)
 {
   uuid result = { 0 };

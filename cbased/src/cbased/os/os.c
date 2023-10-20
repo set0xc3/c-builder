@@ -2,13 +2,13 @@
 
 #include <time.h>
 
-static OS_Context *ctx;
+global OS_Context *os_ctx;
 
-b32
+api b32
 os_init(b32 console)
 {
-  ctx             = malloc(sizeof(OS_Context));
-  ctx->is_console = console;
+  os_ctx             = malloc(sizeof(OS_Context));
+  os_ctx->is_console = console;
 
   // Initialization of time-based random number generator
   srand(time(NULL));
@@ -18,19 +18,19 @@ os_init(b32 console)
     exit(1);
   }
 
-  if (!ctx->is_console) {
-    ctx->root_window
-        = os_window_open(str_lit("Window"), vec4_init(0, 0, 1280, 720));
+  if (!os_ctx->is_console) {
+    os_ctx->root_window
+        = os_window_create(str_lit("Window"), vec4_init(0, 0, 1280, 720));
   }
 
   return true;
 }
 
-b32
+api b32
 os_destroy(void)
 {
-  if (!ctx->is_console) {
-    os_window_close(ctx->root_window);
+  if (!os_ctx->is_console) {
+    os_window_destroy(os_ctx->root_window);
   }
 
   SDL_Quit();
@@ -38,13 +38,13 @@ os_destroy(void)
   return true;
 }
 
-b32
+api b32
 os_event_next(SDL_Event *out_event)
 {
   return SDL_PollEvent(out_event);
 }
 
-b32
+api b32
 os_process_event(SDL_Event *event)
 {
   switch (event->type) {
@@ -52,7 +52,10 @@ os_process_event(SDL_Event *event)
     return false;
 
   case SDL_WINDOWEVENT: {
-    if (event->window.event == SDL_WINDOWEVENT_RESIZED) {
+    if (event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED
+        || event->window.event == SDL_WINDOWEVENT_RESIZED) {
+      os_ctx->root_window->rect.width  = (f32)event->window.data1;
+      os_ctx->root_window->rect.height = (f32)event->window.data2;
     }
   } break;
 
@@ -74,25 +77,25 @@ os_process_event(SDL_Event *event)
   return true;
 }
 
-void
+api void
 os_delay(u32 ms)
 {
   SDL_Delay(ms);
 }
 
-u64
+api u64
 os_perf_counter(void)
 {
   return SDL_GetPerformanceCounter();
 }
 
-u64
+api u64
 os_perf_frequency(void)
 {
   return SDL_GetPerformanceFrequency();
 }
 
-string
+api string
 os_file_read(const string path)
 {
   string result = { 0 };
@@ -112,14 +115,14 @@ os_file_read(const string path)
   return result;
 }
 
-OS_Library
+api OS_Library
 os_library_load(const char *path)
 {
   OS_Library result = { 0 };
 
-#ifdef LINUX
+#ifdef OS_LINUX
   char *ext = "so";
-#elif WINDOWS
+#elif OS_WINDOWS
   char *ext = "dll";
 #endif
 
@@ -143,21 +146,21 @@ os_library_load(const char *path)
   return result;
 }
 
-void
+api void
 os_library_unload(OS_Library *library)
 {
   SDL_UnloadObject(library->handle);
   free(library);
 }
 
-void *
+api void *
 os_library_load_function(OS_Library *library, const char *name)
 {
   return SDL_LoadFunction(library->handle, name);
 }
 
-OS_Window *
-os_window_open(string title, vec4 rect)
+api OS_Window *
+os_window_create(string title, vec4 rect)
 {
   OS_Window *out_window;
   out_window = malloc(sizeof(OS_Window));
@@ -186,8 +189,8 @@ os_window_open(string title, vec4 rect)
   return out_window;
 }
 
-b32
-os_window_close(OS_Window *window)
+api b32
+os_window_destroy(OS_Window *window)
 {
   if (window) {
     SDL_DestroyWindow(window->sdl.window);
@@ -197,14 +200,14 @@ os_window_close(OS_Window *window)
   return true;
 }
 
-void
+api void
 os_window_swap_buffer(OS_Window *window)
 {
   SDL_GL_SwapWindow(window->sdl.window);
 }
 
-OS_Window *
+api OS_Window *
 os_window_root_get(void)
 {
-  return ctx->root_window;
+  return os_ctx->root_window;
 }

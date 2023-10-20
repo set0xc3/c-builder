@@ -2,7 +2,7 @@
 #include "cbased/core/base.h"
 #include "cbased/core/log.h"
 
-void
+api void
 net_init(void)
 {
   i32 error = -1;
@@ -15,12 +15,12 @@ net_init(void)
 #endif
 }
 
-void
+api void
 net_destroy(void)
 {
 }
 
-NET_Socket *
+api NET_Socket *
 net_socket_create(u32 type)
 {
   NET_Socket *result = (NET_Socket *)malloc(sizeof(NET_Socket));
@@ -39,7 +39,7 @@ net_socket_create(u32 type)
   return result;
 }
 
-void
+api void
 net_socket_destroy(NET_Socket *socket)
 {
   if (socket == NULL) {
@@ -50,7 +50,7 @@ net_socket_destroy(NET_Socket *socket)
   free(socket);
 }
 
-b32
+api b32
 net_socket_bind(NET_Socket *socket, const char *ip, u32 port)
 {
   if (!socket->is_valid) {
@@ -84,7 +84,7 @@ net_socket_bind(NET_Socket *socket, const char *ip, u32 port)
   return true;
 }
 
-b32
+api b32
 net_socket_connect(NET_Socket *socket, const char *ip, u32 port)
 {
   if (!socket->is_valid) {
@@ -110,7 +110,7 @@ net_socket_connect(NET_Socket *socket, const char *ip, u32 port)
   return true;
 }
 
-NET_Socket *
+api NET_Socket *
 net_socket_accept(NET_Socket *socket_accept, u32 listeners)
 {
   NET_Socket *result = malloc(sizeof(NET_Socket));
@@ -136,7 +136,7 @@ net_socket_accept(NET_Socket *socket_accept, u32 listeners)
   return result;
 }
 
-void
+api void
 net_socket_close(NET_Socket *socket)
 {
   close(socket->handle);

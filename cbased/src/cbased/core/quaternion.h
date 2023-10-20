@@ -4,7 +4,7 @@
 #include "cbased/core/math.h"
 #include "cbased/core/matrix.h"
 
-INLINE vec4
+inline vec4
 quat_identity(void)
 {
   vec4 out_quat;
@@ -12,13 +12,13 @@ quat_identity(void)
   return out_quat;
 }
 
-INLINE f32
+inline f32
 quat_normal(vec4 q)
 {
   return sqrtf(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
 }
 
-INLINE vec4
+inline vec4
 quat_normalize(vec4 q)
 {
   vec4 out_quat;
@@ -30,7 +30,7 @@ quat_normalize(vec4 q)
   return out_quat;
 }
 
-INLINE vec4
+inline vec4
 quat_conjugate(vec4 q)
 {
   vec4 out_quat;
@@ -41,13 +41,13 @@ quat_conjugate(vec4 q)
   return out_quat;
 }
 
-INLINE vec4
+inline vec4
 quat_inverse(vec4 q)
 {
   return quat_normalize(quat_conjugate(q));
 }
 
-INLINE vec4
+inline vec4
 quat_mul(vec4 a, vec4 b)
 {
   vec4 out_quat;
@@ -58,14 +58,14 @@ quat_mul(vec4 a, vec4 b)
   return out_quat;
 }
 
-INLINE f32
+inline f32
 quat_dot(vec4 a, vec4 b)
 {
   return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 }
 
 // https://stackoverflow.com/questions/1556260/convert-quaternion-rotation-to-rotation-matrix
-INLINE mat4
+inline mat4
 quat_to_mat4(vec4 q)
 {
   mat4 out_matrix     = mat4_identity();
@@ -82,7 +82,7 @@ quat_to_mat4(vec4 q)
   return out_matrix;
 }
 
-INLINE mat4
+inline mat4
 quat_to_rotation_matrix(vec4 q, vec3 center)
 {
   mat4 out_matrix;
@@ -106,7 +106,7 @@ quat_to_rotation_matrix(vec4 q, vec3 center)
   return out_matrix;
 }
 
-INLINE vec4
+inline vec4
 quat_from_axis_angle(vec3 axis, f32 angle, b32 normalize)
 {
   const f32 half_angle = 0.5f * angle;
@@ -123,7 +123,7 @@ quat_from_axis_angle(vec3 axis, f32 angle, b32 normalize)
   return q;
 }
 
-INLINE vec4
+inline vec4
 quat_slerp(vec4 a, vec4 b, f32 percentage)
 {
   vec4 out_quaternion;

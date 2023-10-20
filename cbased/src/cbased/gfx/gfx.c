@@ -2,9 +2,9 @@
 
 #include <glad/glad.h>
 
-static GFX_Context *gfx;
+global GFX_Context *gfx;
 
-void
+api void
 gfx_init(void)
 {
   if (gfx != NULL) {
@@ -15,7 +15,7 @@ gfx_init(void)
   gfx = malloc(sizeof(GFX_Context));
   memset(gfx, 0, sizeof(GFX_Context));
 
-  gfx->projection = mat4_ortho(0.0f, 1080.0f, 720.0f, 0.0f, -0.01f, 1.0f);
+  gfx->projection = mat4_ortho(0.0f, 1280.0f, 720.0f, 0.0f, -0.01f, 1.0f);
 
   gladLoadGL();
 
@@ -108,7 +108,7 @@ gfx_init(void)
   glUniformMatrix4fv(proj_loc, 1, GL_FALSE, gfx->projection.data);
 }
 
-void
+api void
 gfx_destroy(void)
 {
   glDeleteBuffers(1, &gfx->vbo);
@@ -117,16 +117,21 @@ gfx_destroy(void)
   glDeleteProgram(gfx->shader.handle);
 }
 
-void
+api void
 gfx_frame_begin(void)
 {
-  gfx->triangle_count = 0;
+  vec4 viewport = os_window_root_get()->rect;
 
+  gfx->triangle_count = 0;
+  gfx->projection
+      = mat4_ortho(0.0f, viewport.width, viewport.height, 0.0f, -0.01f, 1.0f);
+
+  glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
   glClear(GL_COLOR_BUFFER_BIT);
   glClearColor(0, 0, 0, 0);
 }
 
-void
+api void
 gfx_frame_end(void)
 {
   glUseProgram(gfx->shader.handle);
@@ -139,19 +144,13 @@ gfx_frame_end(void)
   glDrawArrays(GL_TRIANGLES, 0, gfx->triangle_count * 3);
 }
 
-void
-gfx_viewport_set(vec4 viewport)
-{
-  glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
-}
-
-void
+api void
 gfx_bg_color_set(vec4 bg)
 {
   glClearColor(bg.r, bg.g, bg.b, bg.a);
 }
 
-void
+api void
 gfx_triangle_push(vec2 a, vec2 b, vec2 c, vec4 a_color, vec4 b_color,
                   vec4 c_color)
 {
@@ -170,7 +169,7 @@ gfx_triangle_push(vec2 a, vec2 b, vec2 c, vec4 a_color, vec4 b_color,
   gfx->triangle_count++;
 }
 
-void
+api void
 gfx_quad_push(vec4 quad, vec4 tint)
 {
   gfx_triangle_push(

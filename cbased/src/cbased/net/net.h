@@ -36,14 +36,14 @@ struct NET_Socket {
 extern "C" {
 #endif
 
-API void        net_init(void);
-API void        net_destroy(void);
-API NET_Socket *net_socket_create(u32 type);
-API void        net_socket_destroy(NET_Socket *socket);
-API b32         net_socket_bind(NET_Socket *socket, const char *ip, u32 port);
-API b32 net_socket_connect(NET_Socket *socket, const char *ip, u32 port);
-API NET_Socket *net_socket_accept(NET_Socket *socket_accept, u32 listeners);
-API void        net_socket_close(NET_Socket *socket);
+api void        net_init(void);
+api void        net_destroy(void);
+api NET_Socket *net_socket_create(u32 type);
+api void        net_socket_destroy(NET_Socket *socket);
+api b32         net_socket_bind(NET_Socket *socket, const char *ip, u32 port);
+api b32 net_socket_connect(NET_Socket *socket, const char *ip, u32 port);
+api NET_Socket *net_socket_accept(NET_Socket *socket_accept, u32 listeners);
+api void        net_socket_close(NET_Socket *socket);
 
 #ifdef __cplusplus
 }
