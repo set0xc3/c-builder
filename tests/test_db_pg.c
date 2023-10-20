@@ -12,19 +12,20 @@ enum {
 int
 main(void)
 {
-  // IP Docker postgresql (172.17.0.2)
-  DB_pg_connect("host=172.17.0.2 port=5432 dbname=test user=postgres "
-                "password=root connect_timeout=10");
+  if (!DB_pg_connect("host=172.17.0.2 port=5432 dbname=test user=postgres "
+                     "password=root connect_timeout=10")) {
+    return -1;
+  }
 
   if (!DB_pg_connect_is_valid()) {
     DB_pg_finish();
-    return 1;
+    return -1;
   }
 
   PGresult *pg_result = DB_pg_exec("SELECT * FROM clients");
   if (!pg_result) {
     DB_pg_finish();
-    return 1;
+    return -1;
   }
 
   // Получение количества строк и столбцов в результате запроса

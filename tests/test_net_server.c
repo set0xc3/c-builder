@@ -20,9 +20,13 @@ main(void)
   NET_Socket *server = net_socket_create(SOCK_STREAM);
   net_socket_bind(server, "127.0.0.1", 8080);
 
-  while (true) {
-    if (!os_poll_event()) {
-      break;
+  b32 is_quit = false;
+  while (!is_quit) {
+    SDL_Event event;
+    while (os_event_next(&event)) {
+      if (!os_process_event(&event)) {
+        is_quit = true;
+      }
     }
 
     NET_Socket *new_client = net_socket_accept(server, 1);

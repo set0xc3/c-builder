@@ -46,8 +46,7 @@ target_include_directories(${TARGET} PRIVATE
 )
 
 target_link_libraries(${TARGET} PRIVATE 
-  m 
-  GL 
+  vulkan
   pq
   glad
   ${SDL2_LIBRARIES}
