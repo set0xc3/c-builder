@@ -12,8 +12,6 @@
 #include "cbased/core/uuid.h"
 #include "cbased/core/vector.h"
 #include "cbased/db/postgresql.h"
-#include "cbased/gfx/backend/gl.h"
-#include "cbased/gfx/backend/vk.h"
 #include "cbased/gfx/gfx.h"
 #include "cbased/net/net.h"
 #include "cbased/os/os.h"
