@@ -46,6 +46,7 @@ target_include_directories(${TARGET} PRIVATE
 )
 
 target_link_libraries(${TARGET} PRIVATE 
+  m
   vulkan
   pq
   glad

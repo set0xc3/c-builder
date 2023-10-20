@@ -42,8 +42,8 @@ mat4_mul(mat4 a, mat4 b)
 }
 
 inline mat4
-mat4_ortho(f32 left, f32 right, f32 bottom, f32 top, f32 near_clip,
-           f32 far_clip)
+mat4_orthographic(f32 left, f32 right, f32 bottom, f32 top, f32 near_clip,
+                  f32 far_clip)
 {
   mat4 out_matrix     = mat4_identity();
   f32  lr             = 1.0f / (left - right);

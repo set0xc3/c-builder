@@ -22,11 +22,8 @@ struct GFX_Shader {
 };
 
 struct GFX_Context {
-  u32        vao;
-  u32        vbo;
-  GFX_Shader shader;
-
-  mat4 projection;
+  u32 vao;
+  u32 vbo;
 
   GFX_Vertex triangle_data[GFX_TRIANGLE_MAX];
   u32        triangle_count;
@@ -36,6 +33,8 @@ struct GFX_Context {
 extern "C" {
 #endif
 
+api GFX_Context *gfx_get();
+
 api void gfx_init(void);
 api void gfx_destroy(void);
 api void gfx_frame_begin(void);
@@ -43,6 +42,11 @@ api void gfx_frame_end(void);
 api void gfx_triangle_push(vec2 a, vec2 b, vec2 c, vec4 a_color, vec4 b_color,
                            vec4 c_color);
 api void gfx_quad_push(vec4 quad, vec4 tint);
+
+api GFX_Shader *gfx_shader_create(string vert_path, string frag_path);
+api void        gfx_shader_destroy(GFX_Shader *shader);
+api void        gfx_shader_use(GFX_Shader *shader);
+api void gfx_shader_mat4_set(GFX_Shader *shader, string name, mat4 matrix);
 
 #ifdef __cplusplus
 }

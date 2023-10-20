@@ -19,6 +19,7 @@ extern "C" {
 #endif
 
 api Transform transform_create(vec3 position, vec4 rotation, vec3 scale);
+api Transform transform_default(void);
 
 api Transform transform_from_position(vec3 position);
 api Transform transform_from_rotation(vec4 rotation);

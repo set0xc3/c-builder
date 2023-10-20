@@ -9,6 +9,20 @@ transform_create(vec3 position, vec4 rotation, vec3 scale)
   transform.scale    = scale;
   transform.local    = mat4_identity();
   transform.parent   = 0;
+  transform.is_dirty = true;
+  return transform;
+}
+
+api Transform
+transform_default(void)
+{
+  Transform transform;
+  transform.position = vec3_zero();
+  transform.rotation = quat_identity();
+  transform.scale    = vec3_zero();
+  transform.local    = mat4_identity();
+  transform.parent   = 0;
+  transform.is_dirty = true;
   return transform;
 }
 
