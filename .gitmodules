@@ -2,3 +2,6 @@
 	path = vendor/microui
 	url = https://github.com/rxi/microui.git
 	branch = master
+[submodule "vendor/Unity"]
+	path = vendor/Unity
+	url = https://github.com/ThrowTheSwitch/Unity.git
