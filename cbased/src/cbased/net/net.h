@@ -32,10 +32,6 @@ struct NET_Socket {
   struct sockaddr_in addr;
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 api b32         net_init(void);
 api b32         net_destroy(void);
 api NET_Socket *net_socket_create(u32 type);
@@ -44,7 +40,3 @@ api b32         net_socket_bind(NET_Socket *socket, const char *ip, u32 port);
 api b32 net_socket_connect(NET_Socket *socket, const char *ip, u32 port);
 api NET_Socket *net_socket_accept(NET_Socket *socket_accept, u32 listeners);
 api void        net_socket_close(NET_Socket *socket);
-
-#ifdef __cplusplus
-}
-#endif

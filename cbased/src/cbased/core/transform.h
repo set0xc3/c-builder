@@ -14,10 +14,6 @@ typedef struct Transform {
   b32               is_dirty;
 } Transform;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 api Transform transform_create(vec3 position, vec4 rotation, vec3 scale);
 api Transform transform_default(void);
 
@@ -43,7 +39,3 @@ api void transform_scale_set(Transform *transform, vec3 scale);
 
 api Transform *transform_parent_get(Transform *transform);
 api void       transform_parent_set(Transform *transform, Transform *parent);
-
-#ifdef __cplusplus
-}
-#endif

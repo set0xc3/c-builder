@@ -11,16 +11,8 @@ typedef enum LoggerType {
   LoggerType_Count,
 } LoggerType;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 api void log_print(u32 type, const char *time, const char *file_path, u32 line,
                    const char *format, ...);
-
-#ifdef __cplusplus
-}
-#endif
 
 #define LOG_INFO(format, ...)                                                 \
   log_print(LoggerType_Info, __TIME__, __FILE__, __LINE__, format,            \

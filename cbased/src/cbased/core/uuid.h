@@ -8,12 +8,4 @@ struct uuid {
   char value[36];
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 api uuid uuid_gen(void);
-
-#ifdef __cplusplus
-}
-#endif

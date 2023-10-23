@@ -1,14 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(TARGET cbased)
-project(${TARGET} LANGUAGES C)
+project(cbased LANGUAGES C)
 
 set(TARGET_ARCHITECTURE "x64")
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${TARGET}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${TARGET}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${TARGET}/bin)
-
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
@@ -17,15 +11,14 @@ file(GLOB_RECURSE SRC_FILES       src/*.c)
 find_package(SDL2 REQUIRED)
 
 if (DEFINED ENV{PG_INCLUDE_DIR})
-    include_directories($ENV{PG_INCLUDE_DIR})
+  include_directories($ENV{PG_INCLUDE_DIR})
 else()
-    include_directories(/usr/include/postgresql)
+  include_directories(/usr/include/postgresql)
 endif()
 
+add_library(${PROJECT_NAME} ${SRC_FILES})
 
-add_library(${TARGET} ${SRC_FILES})
-
-target_compile_options(${TARGET} PRIVATE 
+target_compile_options(${PROJECT_NAME} PRIVATE 
   -g 
   -O0
   -Wall 
@@ -39,13 +32,13 @@ target_compile_options(${TARGET} PRIVATE
   -Wno-incompatible-library-redeclaration
 )
 
-target_include_directories(${TARGET} PRIVATE 
+target_include_directories(${PROJECT_NAME} PRIVATE 
   src 
   ${CMAKE_SOURCE_DIR}/vendor/glad/include
   ${SDL2_INCLUDE_DIRS}
 )
 
-target_link_libraries(${TARGET} PRIVATE 
+target_link_libraries(${PROJECT_NAME} PRIVATE 
   m
   vulkan
   pq

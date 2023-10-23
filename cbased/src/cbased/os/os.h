@@ -33,10 +33,6 @@ typedef struct OS_Context {
   OS_Window *root_window;
 } OS_Context;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 api b32 os_init(b32 console);
 api b32 os_destroy(void);
 
@@ -55,7 +51,3 @@ api OS_Window *os_window_create(string title, vec4 rect);
 api b32        os_window_destroy(OS_Window *window);
 api void       os_window_swap_buffer(OS_Window *window);
 api OS_Window *os_window_root_get(void);
-
-#ifdef __cplusplus
-}
-#endif

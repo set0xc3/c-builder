@@ -29,10 +29,6 @@ struct GFX_Context {
   u32        triangle_count;
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 api GFX_Context *gfx_get();
 
 api void gfx_init(void);
@@ -47,7 +43,3 @@ api GFX_Shader *gfx_shader_create(string vert_path, string frag_path);
 api void        gfx_shader_destroy(GFX_Shader *shader);
 api void        gfx_shader_use(GFX_Shader *shader);
 api void gfx_shader_mat4_set(GFX_Shader *shader, string name, mat4 matrix);
-
-#ifdef __cplusplus
-}
-#endif

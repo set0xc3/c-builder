@@ -106,8 +106,8 @@ union vec4 {
   };
 
   struct {
-    f32  _ignored7;
-    f32  _ignored8;
+    f32 _ignored7;
+    f32 _ignored8;
     f32 width;
     f32 height;
   };

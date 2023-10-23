@@ -48,7 +48,7 @@ typedef i64 b64;
 
 // Platform Types
 
-#if __cplusplus
+#ifdef __cplusplus
 #define LANG_CPP
 #endif
 
@@ -74,14 +74,14 @@ typedef i64 b64;
 #endif
 #endif
 
-#if LANG_CPP
-#if OS_WINDOWS
+#ifdef LANG_CPP
+#ifdef OS_WINDOWS
 #define imported extern "C" __declspec(dllimport)
 #else
 #define imported extern "C"
 #endif
 #else
-#if OS_WINDOWS
+#ifdef OS_WINDOWS
 #define imported __declspec(dllimport)
 #else
 #define imported
