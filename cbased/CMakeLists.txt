@@ -34,7 +34,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 
 target_include_directories(${PROJECT_NAME} PRIVATE 
   src 
-  ${CMAKE_SOURCE_DIR}/vendor/glad/include
+  ${CMAKE_CURRENT_SOURCE_DIR}/../vendor/glad/include
   ${SDL2_INCLUDE_DIRS}
 )
 

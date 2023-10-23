@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
+message(STATUS "Current source directory: ${CMAKE_CURRENT_SOURCE_DIR}")
+
 set(NAMESPACE cbased)
 project(${NAMESPACE}-tests LANGUAGES C)
 
@@ -10,8 +12,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 include_directories(
   .
-  ${CMAKE_SOURCE_DIR}/cbased/src
-  ${CMAKE_SOURCE_DIR}/vendor/Unity/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cbased/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/../vendor/Unity/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/../vendor/glad/include
+  ${SDL2_INCLUDE_DIRS}
 )
 
 if (DEFINED ENV{PG_INCLUDE_DIR})
@@ -32,7 +36,7 @@ foreach(test_file ${TEST_SRC_FILES})
 
   add_custom_command(
     OUTPUT ${generated_file}
-    COMMAND ${CMAKE_SOURCE_DIR}/vendor/Unity/auto/generate_test_runner.rb ${test_file} ${generated_file}
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/../vendor/Unity/auto/generate_test_runner.rb ${test_file} ${generated_file}
     DEPENDS ${test_file}
   )
 
