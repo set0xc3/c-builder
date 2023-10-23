@@ -1,5 +1,7 @@
 #include <cbased.h>
 
+#include <unity.h>
+
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,16 +11,27 @@
 
 #define PORT 8080
 
-int
-main(void)
+void
+setUp(void)
 {
-  os_init(true);
-  net_init();
+}
+
+void
+tearDown(void)
+{
+}
+
+void
+test_net_server(void)
+{
+  TEST_ASSERT(os_init(true));
+  TEST_ASSERT(net_init());
 
   u32 listen_max = 1000;
 
   NET_Socket *server = net_socket_create(SOCK_STREAM);
-  net_socket_bind(server, "127.0.0.1", 8080);
+  TEST_ASSERT_NOT_NULL(server);
+  TEST_ASSERT(net_socket_bind(server, "127.0.0.1", 8080));
 
   b32 is_quit = false;
   while (!is_quit) {
@@ -48,6 +61,4 @@ main(void)
     os_delay(500);
   }
   shutdown(server->handle, SHUT_RDWR);
-
-  return 0;
 }

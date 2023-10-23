@@ -1,9 +1,21 @@
 #include <cbased.h>
 
+#include <unity.h>
+
 #include "cbased/gfx/camera.h"
 
-int
-main(void)
+void
+setUp(void)
+{
+}
+
+void
+tearDown(void)
+{
+}
+
+void
+test_gfx(void)
 {
   local_persist SDL_Event event;
   local_persist vec4      viewport;
@@ -52,6 +64,4 @@ main(void)
 
   os_destroy();
   gfx_destroy();
-
-  return 0;
 }

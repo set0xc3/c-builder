@@ -15,7 +15,7 @@ os_init(b32 console)
 
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     LOG_ERR("[SDL] Failed init sdl: %s\n", SDL_GetError());
-    exit(1);
+    return false;
   }
 
   if (!os_ctx->is_console) {

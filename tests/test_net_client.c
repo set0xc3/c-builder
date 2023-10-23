@@ -1,5 +1,7 @@
 #include <cbased.h>
 
+#include <unity.h>
+
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <string.h>
@@ -8,8 +10,18 @@
 
 #define BUFFER_SIZE 1024
 
-int
-main(void)
+void
+setUp(void)
+{
+}
+
+void
+tearDown(void)
+{
+}
+
+void
+test_client(void)
 {
   os_init(true);
   net_init();
@@ -47,6 +59,4 @@ main(void)
     os_delay(500);
   }
   net_socket_destroy(server);
-
-  return 0;
 }

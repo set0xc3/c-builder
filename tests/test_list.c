@@ -1,5 +1,7 @@
 #include <cbased.h>
 
+#include <unity.h>
+
 typedef struct Entity     Entity;
 typedef struct EntityNode EntityNode;
 typedef struct EntityList EntityList;
@@ -18,8 +20,18 @@ struct EntityList {
   u32      count;
 };
 
-int
-main(void)
+void
+setUp(void)
+{
+}
+
+void
+tearDown(void)
+{
+}
+
+void
+test_list(void)
 {
   EntityList entity_list = { 0 };
 
@@ -41,6 +53,4 @@ main(void)
     Entity *entity = &node->entity;
     LOG_INFO("entity.uuid: %s\n", entity->id.value);
   }
-
-  return 0;
 }

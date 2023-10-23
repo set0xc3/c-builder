@@ -36,8 +36,8 @@ struct NET_Socket {
 extern "C" {
 #endif
 
-api void        net_init(void);
-api void        net_destroy(void);
+api b32         net_init(void);
+api b32         net_destroy(void);
 api NET_Socket *net_socket_create(u32 type);
 api void        net_socket_destroy(NET_Socket *socket);
 api b32         net_socket_bind(NET_Socket *socket, const char *ip, u32 port);

@@ -1,5 +1,7 @@
 #include <cbased.h>
 
+#include <unity.h>
+
 enum {
   Client_Id      = 1,
   Client_Name    = 2,
@@ -9,23 +11,33 @@ enum {
   Client_Date    = 6,
 };
 
-int
-main(void)
+void
+setUp(void)
+{
+}
+
+void
+tearDown(void)
+{
+}
+
+void
+test_db_pg(void)
 {
   if (!DB_pg_connect("host=172.17.0.2 port=5432 dbname=test user=postgres "
                      "password=root connect_timeout=10")) {
-    return -1;
+    return;
   }
 
   if (!DB_pg_connect_is_valid()) {
     DB_pg_finish();
-    return -1;
+    return;
   }
 
   PGresult *pg_result = DB_pg_exec("SELECT * FROM clients");
   if (!pg_result) {
     DB_pg_finish();
-    return -1;
+    return;
   }
 
   // Получение количества строк и столбцов в результате запроса
@@ -44,6 +56,4 @@ main(void)
   }
 
   DB_pg_finish();
-
-  return 0;
 }

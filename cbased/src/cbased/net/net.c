@@ -2,7 +2,7 @@
 #include "cbased/core/base.h"
 #include "cbased/core/log.h"
 
-api void
+api b32
 net_init(void)
 {
   i32 error = -1;
@@ -10,14 +10,17 @@ net_init(void)
   WSADATA d;
   if (WSAStartup(MAKEWORD(2, 2), &d)) {
     fprintf(stderr, "Failed to initialize.\n");
-    return 1;
+    return false;
   }
 #endif
+
+  return true;
 }
 
-api void
+api b32
 net_destroy(void)
 {
+  return true;
 }
 
 api NET_Socket *

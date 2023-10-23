@@ -1,11 +1,20 @@
 #include <cbased.h>
 
-int
-main(void)
-{
-  os_init(false);
-  os_delay(1000);
-  os_destroy();
+#include <unity.h>
 
-  return 0;
+void
+setUp(void)
+{
+}
+
+void
+tearDown(void)
+{
+}
+
+void
+test_os(void)
+{
+  TEST_ASSERT(os_init(false));
+  TEST_ASSERT(os_destroy());
 }

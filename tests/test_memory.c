@@ -1,5 +1,7 @@
 #include <cbased.h>
 
+#include <unity.h>
+
 typedef struct Node Node;
 
 struct Node {
@@ -7,8 +9,18 @@ struct Node {
   string name;
 };
 
-int
-main(void)
+void
+setUp(void)
+{
+}
+
+void
+tearDown(void)
+{
+}
+
+void
+test_memory(void)
 {
   MemoryArena arena = memory_arena_alloc_default();
 
@@ -36,6 +48,4 @@ main(void)
 
   LOG_INFO("node.uuid: %s\n", node->id.value);
   LOG_INFO("node.name: %s\n", node->name.str);
-
-  return 0;
 }
