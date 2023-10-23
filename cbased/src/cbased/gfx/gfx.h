@@ -33,8 +33,8 @@ api GFX_Context *gfx_get();
 
 api void gfx_init(void);
 api void gfx_destroy(void);
-api void gfx_frame_begin(void);
-api void gfx_frame_end(void);
+api void gfx_begin(void);
+api void gfx_end(void);
 api void gfx_triangle_push(vec2 a, vec2 b, vec2 c, vec4 a_color, vec4 b_color,
                            vec4 c_color);
 api void gfx_quad_push(vec4 quad, vec4 tint);

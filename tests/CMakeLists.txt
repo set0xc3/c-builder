@@ -1,14 +1,25 @@
 cmake_minimum_required(VERSION 3.10)
 
-message(STATUS "Current source directory: ${CMAKE_CURRENT_SOURCE_DIR}")
-
 set(NAMESPACE cbased)
 project(${NAMESPACE}-tests LANGUAGES C)
 
 set(TARGET_ARCHITECTURE "x64")
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -Wall -Wextra -Wno-gnu-zero-variadic-macro-arguments -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable -Wno-macro-redefined -Wno-attributes -Wno-incompatible-library-redeclaration")
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+
+add_compile_options(
+  -g 
+  -O0
+  -Wall 
+  -Wextra 
+  -Wno-gnu-zero-variadic-macro-arguments 
+  -Wno-unused-parameter 
+  -Wno-unused-variable 
+  -Wno-unused-but-set-variable 
+  -Wno-macro-redefined 
+  -Wno-attributes 
+  -Wno-incompatible-library-redeclaration
+)
 
 include_directories(
   .

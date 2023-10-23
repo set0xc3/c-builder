@@ -12,7 +12,7 @@ struct mat4 {
   f32 data[16];
 };
 
-inline mat4
+function inline mat4
 mat4_identity(void)
 {
   mat4 out_matrix;
@@ -23,7 +23,7 @@ mat4_identity(void)
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_mul(mat4 a, mat4 b)
 {
   mat4       out_matrix = mat4_identity();
@@ -41,7 +41,7 @@ mat4_mul(mat4 a, mat4 b)
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_orthographic(f32 left, f32 right, f32 bottom, f32 top, f32 near_clip,
                   f32 far_clip)
 {
@@ -58,7 +58,7 @@ mat4_orthographic(f32 left, f32 right, f32 bottom, f32 top, f32 near_clip,
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_perspective(f32 fov_radians, f32 aspect_ratio, f32 near_clip,
                  f32 far_clip)
 {
@@ -73,7 +73,7 @@ mat4_perspective(f32 fov_radians, f32 aspect_ratio, f32 near_clip,
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_look_at(vec3 position, vec3 target, vec3 up)
 {
   mat4 out_matrix;
@@ -103,7 +103,7 @@ mat4_look_at(vec3 position, vec3 target, vec3 up)
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_transposed(mat4 matrix)
 {
   mat4 out_matrix     = mat4_identity();
@@ -126,7 +126,7 @@ mat4_transposed(mat4 matrix)
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_inverse(mat4 matrix)
 {
   const f32 *m   = matrix.data;
@@ -212,7 +212,7 @@ mat4_inverse(mat4 matrix)
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_translation(vec3 position)
 {
   mat4 out_matrix     = mat4_identity();
@@ -222,7 +222,7 @@ mat4_translation(vec3 position)
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_scale(vec3 scale)
 {
   mat4 out_matrix     = mat4_identity();
@@ -232,7 +232,7 @@ mat4_scale(vec3 scale)
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_euler_x(f32 angle_radians)
 {
   mat4 out_matrix     = mat4_identity();
@@ -245,7 +245,7 @@ mat4_euler_x(f32 angle_radians)
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_euler_y(f32 angle_radians)
 {
   mat4 out_matrix     = mat4_identity();
@@ -258,7 +258,7 @@ mat4_euler_y(f32 angle_radians)
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_euler_z(f32 angle_radians)
 {
   mat4 out_matrix    = mat4_identity();
@@ -271,7 +271,7 @@ mat4_euler_z(f32 angle_radians)
   return out_matrix;
 }
 
-inline mat4
+function inline mat4
 mat4_euler_xyz(f32 x_radians, f32 y_radians, f32 z_radians)
 {
   mat4 rx         = mat4_euler_x(x_radians);
@@ -281,7 +281,7 @@ mat4_euler_xyz(f32 x_radians, f32 y_radians, f32 z_radians)
   return out_matrix;
 }
 
-inline vec3
+function inline vec3
 mat4_forward(mat4 matrix)
 {
   vec3 forward;
@@ -292,7 +292,7 @@ mat4_forward(mat4 matrix)
   return forward;
 }
 
-inline vec3
+function inline vec3
 mat4_backward(mat4 matrix)
 {
   vec3 backward;
@@ -303,7 +303,7 @@ mat4_backward(mat4 matrix)
   return backward;
 }
 
-inline vec3
+function inline vec3
 mat4_up(mat4 matrix)
 {
   vec3 up;
@@ -314,7 +314,7 @@ mat4_up(mat4 matrix)
   return up;
 }
 
-inline vec3
+function inline vec3
 mat4_down(mat4 matrix)
 {
   vec3 down;
@@ -325,7 +325,7 @@ mat4_down(mat4 matrix)
   return down;
 }
 
-inline vec3
+function inline vec3
 mat4_left(mat4 matrix)
 {
   vec3 left;
@@ -336,7 +336,7 @@ mat4_left(mat4 matrix)
   return left;
 }
 
-inline vec3
+function inline vec3
 mat4_right(mat4 matrix)
 {
   vec3 right;
@@ -347,7 +347,7 @@ mat4_right(mat4 matrix)
   return right;
 }
 
-inline vec3
+function inline vec3
 mat4_mul_vec3(mat4 m, vec3 v)
 {
   vec3 out_vector;
@@ -360,7 +360,7 @@ mat4_mul_vec3(mat4 m, vec3 v)
   return out_vector;
 }
 
-inline vec3
+function inline vec3
 vec3_mul_mat4(vec3 v, mat4 m)
 {
   vec3 out_vector;
@@ -373,7 +373,7 @@ vec3_mul_mat4(vec3 v, mat4 m)
   return out_vector;
 }
 
-inline vec4
+function inline vec4
 mat4_mul_vec4(mat4 m, vec4 v)
 {
   vec4 out_vector;
@@ -388,7 +388,7 @@ mat4_mul_vec4(mat4 m, vec4 v)
   return out_vector;
 }
 
-inline vec4
+function inline vec4
 vec4_mul_mat4(vec4 v, mat4 m)
 {
   vec4 out_vector;

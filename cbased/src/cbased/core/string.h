@@ -10,7 +10,7 @@ struct string {
   u64   size;
 };
 
-inline string
+function inline string
 str_lit(const char *c)
 {
   string result;
@@ -19,7 +19,7 @@ str_lit(const char *c)
   return result;
 }
 
-inline b32
+function inline b32
 str_eq(const string left, const string right)
 {
   b32 result = !strcmp(left.str, right.str);

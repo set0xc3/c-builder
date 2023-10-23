@@ -45,7 +45,7 @@ test_gfx(void)
       viewport = os_window_root_get()->rect;
     }
 
-    gfx_frame_begin();
+    gfx_begin();
 
     mat4 model_matrix = mat4_identity();
     model_matrix      = mat4_translation(vec3_zero());
@@ -57,7 +57,7 @@ test_gfx(void)
 
     gfx_quad_push(vec4_init(0, 0, 100, 100), vec4_init(1, 0, 1, 1));
 
-    gfx_frame_end();
+    gfx_end();
     os_window_swap_buffer(os_window_root_get());
     os_delay(1);
   }

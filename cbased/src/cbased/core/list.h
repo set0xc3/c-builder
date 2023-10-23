@@ -20,7 +20,7 @@ struct DLL_Iterator {
   u64       offset;
 };
 
-inline void
+function inline void
 DLL_push_front(DLL_List *list, DLL_Node *node)
 {
   if (list->head != NULL) {
@@ -36,7 +36,7 @@ DLL_push_front(DLL_List *list, DLL_Node *node)
   }
 }
 
-inline void
+function inline void
 DLL_push_back(DLL_List *list, DLL_Node *node)
 {
   if (list->tail != NULL) {
@@ -52,7 +52,7 @@ DLL_push_back(DLL_List *list, DLL_Node *node)
   }
 }
 
-inline void
+function inline void
 DLL_remove(DLL_List *list, DLL_Node *node)
 {
   if (node != NULL) {
@@ -69,13 +69,13 @@ DLL_remove(DLL_List *list, DLL_Node *node)
   }
 }
 
-inline b32
+function inline b32
 DLL_is_empty(DLL_List *list)
 {
   return list->head == NULL;
 }
 
-inline DLL_Node *
+function inline DLL_Node *
 DLL_pop_front(DLL_List *list)
 {
   DLL_Node *link = list->head;
@@ -97,7 +97,7 @@ DLL_pop_front(DLL_List *list)
   return link;
 }
 
-inline DLL_Node *
+function inline DLL_Node *
 DLL_pop_back(DLL_List *list)
 {
   DLL_Node *link = list->tail;
@@ -119,7 +119,7 @@ DLL_pop_back(DLL_List *list)
   return link;
 }
 
-inline void *
+function inline void *
 DLL_iterate_next(DLL_Iterator *it)
 {
   DLL_Node *node = it->curr;
@@ -130,7 +130,7 @@ DLL_iterate_next(DLL_Iterator *it)
   return (void *)((u64)node - it->offset);
 }
 
-inline void *
+function inline void *
 DLL_iterate_prev(DLL_Iterator *it)
 {
   DLL_Node *node = it->curr;

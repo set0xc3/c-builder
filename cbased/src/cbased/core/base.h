@@ -116,7 +116,7 @@ typedef i64 b64;
 #define inline   __attribute__((always_inline)) inline
 #define noinline __attribute__((noinline))
 #else
-#define inline static inline
+#define inline inline
 #define noinline
 #endif
 

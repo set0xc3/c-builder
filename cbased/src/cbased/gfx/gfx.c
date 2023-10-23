@@ -48,7 +48,7 @@ gfx_destroy(void)
 }
 
 api void
-gfx_frame_begin(void)
+gfx_begin(void)
 {
   vec4 viewport = os_window_root_get()->rect;
 
@@ -60,7 +60,7 @@ gfx_frame_begin(void)
 }
 
 api void
-gfx_frame_end(void)
+gfx_end(void)
 {
   glBindVertexArray(gfx->vao);
   glBindBuffer(GL_ARRAY_BUFFER, gfx->vbo);
@@ -82,8 +82,8 @@ gfx_triangle_push(vec2 a, vec2 b, vec2 c, vec4 a_color, vec4 b_color,
                   vec4 c_color)
 {
   if (gfx->triangle_count == GFX_TRIANGLE_MAX) {
-    gfx_frame_end();
-    gfx_frame_begin();
+    gfx_end();
+    gfx_begin();
   }
 
   gfx->triangle_data[gfx->triangle_count * 3 + 0].position = a;
