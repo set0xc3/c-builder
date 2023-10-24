@@ -52,10 +52,16 @@ os_process_event(SDL_Event *event)
     return false;
 
   case SDL_WINDOWEVENT: {
-    if (event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED
-        || event->window.event == SDL_WINDOWEVENT_RESIZED) {
+    switch (event->window.event) {
+    case SDL_WINDOWEVENT_SIZE_CHANGED:
       os_ctx->root_window->rect.width  = (f32)event->window.data1;
       os_ctx->root_window->rect.height = (f32)event->window.data2;
+      break;
+
+    case SDL_WINDOWEVENT_MOVED:
+      os_ctx->root_window->rect.x = (f32)event->window.data1;
+      os_ctx->root_window->rect.y = (f32)event->window.data2;
+      break;
     }
   } break;
 
